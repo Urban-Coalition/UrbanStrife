@@ -1,0 +1,11 @@
+"urbanstrife"
+{
+	"base"		"base"
+	"title"		"Urban Strife"
+	"category"	"pvp"
+	"menusystem"	"1"
+
+	"settings"
+	{
+	}
+}

@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/urbanoperations/swat/gign_alpha_b_col.vtf"
+	"$bumpmap" "models/urbanoperations/swat/gign_alpha_b_nml_spc.vtf"
+	
+	"$translucent" "1"
+	
+	"$phong" "1"
+	"$phongexponent" "12"
+	"$phongboost" "20"
+	"$phongfresnelranges" "[1 1 1]"
+	
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[1.5 1.35 0.9]"
+	"$normalmapalphaenvmapmask" "1"
+	
+	"$rimlight" "1"
+	"$rimlightexponent" "1"
+	"$rimlightboost" "2"
+}

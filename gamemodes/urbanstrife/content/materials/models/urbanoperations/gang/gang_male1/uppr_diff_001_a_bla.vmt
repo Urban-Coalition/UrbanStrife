@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/urbanoperations/gang/gang_male1/uppr_diff_001_a_bla"
+	"$bumpmap" "models/urbanoperations/gang/gang_male1/uppr_normal_001"
+	"$surfaceprop" "flesh"
+	"$model" 1
+	"$nocull" 1
+
+	"$phong" "1"
+	"$phongexponent" "20"
+	"$phongboost" "0.05"	
+	"$phongfresnelranges"	"[.1 0.2 1]"
+	"$halflambert" "1"
+
+
+	"$rimlight" "1"										
+	"$rimlightexponent" "20"							
+	"$rimlightboost" "0.1"
+	
+}

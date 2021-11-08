@@ -1,0 +1,16 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "models/urbanoperations/swat/sas_glove_col.vtf"
+	"$bumpmap" "models/urbanoperations/swat/sas_glove_nml_spc.vtf"
+	
+	"$phong" "1"
+	"$phongalbedotint" "1"
+	"$phongexponenttexture" "models/urbanoperations/swat/com_half_albedo_tint.vtf"
+	"$phongexponent" "12"
+	"$phongboost" "15"
+	"$phongfresnelranges" "[0.1 0.6 1]"
+	
+	"$rimlight" "1"
+	"$rimlightexponent" "20"
+	"$rimlightboost" "5"
+}

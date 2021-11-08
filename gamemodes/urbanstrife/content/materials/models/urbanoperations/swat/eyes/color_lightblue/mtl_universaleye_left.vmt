@@ -1,0 +1,18 @@
+"EyeRefract"
+{
+	"$Iris"               "models/urbanoperations/swat/eyes/com_eye_iris_lightblue_l.vtf"	// Iris color in RGB with cornea noise in A
+	"$AmbientOcclTexture" "models/urbanoperations/swat/eyes/com_eye_occlusion.vtf"			// Ambient occlusion in RGB, A unused
+	"$Envmap"             "models/urbanoperations/swat/eyes/com_eye_specular_cubemap"	// Reflection environment map
+	"$CorneaTexture"      "models/urbanoperations/swat/eyes/com_eye_cornea.vtf"				// Special texture that has 2D cornea normal in RG and other data in BA
+	
+	"$AmbientOcclColor" "[1.0 1.0 1.0]"	// Default 0.33, 0.33, 0.33
+	"$Dilation" "0.75"					// Default 0.5
+	"$ParallaxStrength" "0.2"           // Default 0.25
+	"$CorneaBumpStrength" "0.65"		// Default 1.0
+	"$glossiness" "0.7"					// Default 0.5
+	
+	"$halflambert" "1"
+	"$nodecal" "1"
+	
+	"$RaytraceSphere" "0"				// When enabled, this distorts the eye shape, since the eyeball mesh is already round
+}
