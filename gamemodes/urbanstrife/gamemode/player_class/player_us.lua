@@ -27,8 +27,8 @@ end
 function PLAYER:Init()
     self.Player.Loadout = {
         ["strife_primary"] = {"arccw_ud_m16"},
-        ["strife_secondary"] = {"arccw_ud_glock", {[2] = "ud_glock_slide_auto"}},
-        ["strife_armor"] = {"armor_heavy"}
+        ["strife_secondary"] = {"arccw_ud_glock"},
+        ["strife_armor"] = nil --{"armor_heavy"}
     }
 
     -- Prevent knockback from damage
@@ -40,15 +40,7 @@ function PLAYER:Spawn()
 end
 
 function PLAYER:Loadout()
-    --[[]
-    self.Player:Give("arccw_ud_glock")
-    self.Player:Give("arccw_ud_m16")
-    self.Player:Give("arccw_ud_uzi")
-    self.Player:Give("arccw_ud_mini14")
-    self.Player:Give("arccw_ud_870")
-    self.Player:Give("arccw_ud_m1014")
-    ]]
-    self.Player:SetNWInt("ArmorLevel", 0)
+    self.Player:SetNWInt("ArmorLevel", self.Player:IsBot() and math.random(0, 2) or 0)
     GAMEMODE:GiveLoadoutPlayer(self.Player)
 end
 

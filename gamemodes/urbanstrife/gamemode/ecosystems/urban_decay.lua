@@ -166,7 +166,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_m1014",
         icon = Material("arccw/weaponicons/arccw_ud_m1014"),
 
-        cost_point = 4,
+        cost_point = 5,
         cost_cash = 2400,
 
         atttype = ATTTYPE_ARCCW,

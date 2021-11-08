@@ -26,6 +26,14 @@ function GM:Move(ply, mv)
     end
     ]]
 
+
+    -- armor penalty
+    if ply:GetNWInt("ArmorLevel", 0) > 0 then
+        local mul = ply:GetNWInt("ArmorLevel", 0) == 2 and 0.85 or 0.9
+        mv:SetMaxSpeed(mv:GetMaxSpeed() * mul)
+        mv:SetMaxClientSpeed(mv:GetMaxClientSpeed() * mul)
+    end
+
 end
 
 -- fuck gmod combat
