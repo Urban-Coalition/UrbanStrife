@@ -30,7 +30,7 @@ end
 
 function GM:Initialize()
     if SERVER then self:StrifeInitialize() end
-
+    self:LoadEcosystems()
     self:InitializeAtts()
 end
 

@@ -12,6 +12,10 @@ GM.CommonAttSlots = {
         name = "Muzzle",
         slot = {"muzzle"},
     },
+    ["acw_muzzle_sg"] = {
+        name = "Muzzle",
+        slot = {"choke", "muzzle_shotgun"},
+    },
     ["acw_ub"] = {
         name = "Underbarrel",
         slot = {"foregrip", "ubgl"},
@@ -49,6 +53,7 @@ GM.CommonAttSlots = {
 }
 
 GM.EntryAttachments = {}
+GM.PartialAttachments = {}
 GM.EntryIDToAtt = {}
 GM.EntryAttachmentNum = 0
 
@@ -66,7 +71,8 @@ function GM:AddEntryAtt(t, class, slot, cost_point, cost_cash, args)
         GAMEMODE.EntryAttachmentNum = GAMEMODE.EntryAttachmentNum + 1
         id = GAMEMODE.EntryAttachmentNum
     else
-        id = GAMEMODE.EntryAttachments[class].ID
+        return
+        --id = GAMEMODE.EntryAttachments[class].ID
     end
 
     GAMEMODE.EntryAttachments[class] = {
@@ -79,7 +85,10 @@ function GM:AddEntryAtt(t, class, slot, cost_point, cost_cash, args)
         slot = isstring(slot) and {slot} or slot,
     }
     GAMEMODE.EntryIDToAtt[id] = class
-    if args then GAMEMODE.EntryAttachments[class] = table.Merge(args, GAMEMODE.EntryAttachments[class]) end
+    if args then GAMEMODE.EntryAttachments[class] = table.Merge(GAMEMODE.EntryAttachments[class], args) end
+    if GAMEMODE.PartialAttachments[class] then
+        GAMEMODE.EntryAttachments[class] = table.Merge(GAMEMODE.EntryAttachments[class], GAMEMODE.PartialAttachments[class])
+    end
 
     if t == ATTTYPE_ARCCW then
         GAMEMODE.EntryAttachments[class].baseID = ArcCW.AttachmentTable[class].ID
