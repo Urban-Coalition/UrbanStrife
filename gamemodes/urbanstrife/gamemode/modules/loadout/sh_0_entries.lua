@@ -18,8 +18,6 @@ LDENTRY_WEPCAT_UTILITY = 7
         int cost_point,
         int cost_cash,
         string category,
-
-        (optional)
         bool unique,
 
     TYPE_LUA:
@@ -31,6 +29,7 @@ LDENTRY_WEPCAT_UTILITY = 7
         int wepcat,
         int atttype,
         table attachments,
+        bool nodefaultclip,
         string ammotype,
         int ammocount,
 ]]
@@ -72,7 +71,7 @@ function GM:EntryShowAtts(entry)
     if entry.atttype == ATTTYPE_ARCCW then
         return not (GetConVar("arccw_attinv_free"):GetBool() and GetConVar("arccw_enable_customization"):GetInt() > 0)
     elseif entry.atttype == ATTTYPE_TACRP then
-        return true -- TODO: check if tacrp atts are free
+        return not GetConVar("tacrp_free_atts"):GetBool()
     else
         return false
     end

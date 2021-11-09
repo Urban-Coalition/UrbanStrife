@@ -46,15 +46,19 @@ function GM:ShowSpare2(ply)
     net.Send(ply)
 end
 
-function GM:GiveLoadoutEntry(ply, id, atts)
+function GM:GiveLoadoutEntry(ply, id, atts, slot)
     local entry = GAMEMODE.LoadoutEntries[id]
     if not entry then print("invalid loadout entry " .. tostring(id)) return end
 
-    if entry.type == LDENTRY_TYPE_LUA then
+    if entry.callback then
         entry:callback(ply)
-    elseif entry.type == LDENTRY_TYPE_SWEP then
+    end
+    if entry.class then
+        local wep = ply:Give(entry.class, entry.nodefaultclip)
+
         if entry.atttype == ATTTYPE_ARCCW then
-            local wep = ply:Give(entry.class)
+            wep:SetHolster_Time(1)
+            wep:SetHolster_Entity(NULL)
             if entry.atttype and entry.attachments and atts and GetConVar("arccw_attinv_free"):GetInt() == 0 then
                 for k, v in pairs(entry.attachments) do
                     if not atts[k] then continue end
@@ -63,16 +67,28 @@ function GM:GiveLoadoutEntry(ply, id, atts)
             end
         elseif entry.atttype == ATTTYPE_TACRP then
             -- TODO: TacRP attachments
-            ply:Give(entry.class)
         else
-            ply:Give(entry.class)
+
         end
+
+        if slot and slot.ammolevel then
+            local ammolevel = slot.ammolevel[ply:GetNWInt("AmmoLevel", 0) + 1]
+            local ammotype = wep and wep.Primary.Ammo or entry.ammotype
+            local size = wep.Primary.ClipSize
+            if wep and wep.ArcCW then
+                wep:AdjustAtts()
+                ammotype = wep:GetBuff_Override("Override_Ammo", wep.Primary.Ammo) or ammotype
+                size = wep:GetCapacity()
+            end
+            -- completely arbitrary threshold but just trust me ok
+            if size >= 75 then ammolevel = math.ceil(ammolevel / 3) end
+            ply:GiveAmmo(ammolevel * size, ammotype, true)
+        end
+        wep:SetClip1(wep.ArcCW and (wep:GetCapacity() + wep:GetChamberSize()) or wep.Primary.ClipSize)
 
         if entry.ammotype and entry.ammocount then
             ply:GiveAmmo(entry.ammocount, entry.ammotype, true)
         end
-    else
-        print("Unknown entry type " .. tostring(entry.type))
     end
 end
 
@@ -93,6 +109,16 @@ function GM:GiveLoadoutPlayer(ply, strip)
     for k, v in pairs(GAMEMODE.LoadoutSlots) do
         local slot = ply.Loadout[k]
         if not slot then continue end
-        GAMEMODE:GiveLoadoutEntry(ply, slot[1], slot[2])
+        GAMEMODE:GiveLoadoutEntry(ply, slot[1], slot[2], v)
+    end
+
+    for k, v in pairs(GAMEMODE.LoadoutSlots) do
+        local slot = ply.Loadout[k]
+        if not slot then continue end
+        local entry = GAMEMODE.LoadoutEntries[slot[1]]
+
+        if entry and entry.class and v.primary then
+            ply:SelectWeapon(entry.class)
+        end
     end
 end
