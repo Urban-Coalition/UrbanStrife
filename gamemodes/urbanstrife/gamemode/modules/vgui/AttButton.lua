@@ -95,7 +95,8 @@ end
 
 function PANEL:DoClick()
     local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
-    if slot and self:GetAttName() and self:GetAttName() ~= slot[2][self:GetIndex()] then
+    if slot and self:GetAttName() and (not slot[2] or self:GetAttName() ~= slot[2][self:GetIndex()]) then
+        slot[2] = slot[2] or {}
         slot[2][self:GetIndex()] = self:GetAttName()
         GAMEMODE.NewLoadoutDirty = true
     else
