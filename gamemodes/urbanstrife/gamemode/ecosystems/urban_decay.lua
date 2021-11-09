@@ -284,8 +284,7 @@ ECOSYSTEM.PartialAttachments = {
         cost_cash = 500,
     },
     ["ud_glock_slide_lb"] = {
-        cost_point = 1,
-        cost_cash = 500,
+        cost_point = 0,
     },
     ["ud_glock_slide_nytesyte"] = {
         cost_point = 1,
@@ -296,8 +295,7 @@ ECOSYSTEM.PartialAttachments = {
         cost_cash = 500,
     },
     ["ud_glock_slide_subcompact"] = {
-        cost_point = 1,
-        cost_cash = 500,
+        cost_point = 0,
     },
     ["ud_glock_frame_flared"] = {
         cost_point = 1,
@@ -316,6 +314,45 @@ ECOSYSTEM.PartialAttachments = {
     ["ud_glock_mag_100"] = {
         cost_point = 3,
         cost_cash = 2000,
+    },
+
+    ["ud_m16_grip_ergo"] = {
+        cost_point = 0,
+    },
+    ["ud_m16_grip_skel"] = {
+        cost_point = 0,
+    },
+    ["ud_m16_grip_wood"] = {
+        cost_point = 0,
+    },
+    ["ud_m16_mag_20"] = {
+        cost_point = 0,
+    },
+    ["ud_m16_mag_40"] = {
+        cost_point = 1,
+        cost_cash = 800,
+    },
+    ["ud_m16_mag_60"] = {
+        cost_point = 2,
+        cost_cash = 1500,
+    },
+    ["ud_m16_mag_100"] = {
+        cost_point = 3,
+        cost_cash = 2000,
+    },
+    ["ud_m16_receiver_9mm"] = {
+        cost_point = 1,
+        cost_cash = 800,
+    },
+    ["ud_m16_receiver_auto"] = {
+        cost_point = 2,
+        cost_cash = 1200,
+    },
+    ["ud_m16_receiver_semi"] = {
+        cost_point = 0,
+    },
+    ["ud_m16_receiver_cali"] = {
+        cost_point = 0,
     },
 }
 
