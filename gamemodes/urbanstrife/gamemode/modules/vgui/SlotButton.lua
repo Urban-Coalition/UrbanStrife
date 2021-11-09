@@ -85,9 +85,11 @@ function PANEL:Paint(w, h)
         draw.SimpleText(entry.cost_point, "StrifeSS_12", w - ScreenScale(5), h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
         if entry.icon and not entry.icon:IsError() then
-            local len = h - ScreenScale(2)
+            local len = h * (entry.icon_scale or 1)
+            local ratio = entry.icon_ratio or 2
             surface.SetMaterial(entry.icon)
-            surface.DrawTexturedRect(w - ScreenScale(16) - len * 2, ScreenScale(1), len * 2, len)
+            surface.SetDrawColor(255, 255, 255, 255)
+            surface.DrawTexturedRectRotated(w - ScreenScale(16) - len * ratio / 2, h / 2, len * ratio, len, entry.icon_rotation or 0)
         end
     end
     return true

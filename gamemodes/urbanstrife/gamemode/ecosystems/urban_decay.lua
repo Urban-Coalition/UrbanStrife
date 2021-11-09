@@ -204,6 +204,9 @@ ECOSYSTEM.LoadoutEntries = {
         cost_point = 4,
         cost_cash = 7000,
         unique = true,
+        nodefaultclip = true,
+        ammotype = "smg1_grenade",
+        ammocount = 2,
 
         atttype = ATTTYPE_ARCCW,
         attachments = {
