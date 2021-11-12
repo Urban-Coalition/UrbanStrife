@@ -30,9 +30,9 @@ function GM:PlayerSpawn(pl, transiton)
     -- Stop observer mode
     pl:UnSpectate()
     player_manager.SetPlayerClass(pl, "player_us")
-    pl:SetupHands()
     player_manager.OnPlayerSpawn(pl, transiton)
     player_manager.RunClass(pl, "Spawn")
+    pl:SetupHands()
 
     -- If we are in transition, do not touch player's weapons
     if (not transiton) then

@@ -24,14 +24,12 @@ function GM:OppositeTeam(t)
     return (t == TEAM_CT and TEAM_TR) or TEAM_CT
 end
 
-if SERVER then
-    util.AddNetworkString("STONETHISBITCH")
-end
-
 function GM:Initialize()
+    if self.INITIALIZE_COMPLETE then return end
     if SERVER then self:StrifeInitialize() end
     self:LoadEcosystems()
     self:InitializeAtts()
+    self.INITIALIZE_COMPLETE = true
 end
 
 function GM:CreateTeams()

@@ -15,7 +15,7 @@ local function title(self, str)
     l:DockMargin(0, SS(1), 0, 0)
     l.Paint = function(pnl, w, h)
         draw.SimpleTextOutlined(str, "StrifeSS_10", SS(1), h - SS(2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM, 1, GCLR("shadow"))
-        surface.SetDrawColor(team.GetColor(LocalPlayer():Team()):Unpack())
+        surface.SetDrawColor(GCLR_UP("t"))
         surface.DrawRect(0, h - SS(2), w - 16, SS(1))
     end
     table.insert(self.Items, l)

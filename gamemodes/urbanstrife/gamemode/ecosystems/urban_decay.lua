@@ -29,6 +29,7 @@ ECOSYSTEM.LoadoutEntries = {
             },
             GAMEMODE.CommonAttSlots.acw_muzzle,
             GAMEMODE.CommonAttSlots.acw_fg_tac_pistol,
+            false,
             {
                 name = "Magazine",
                 slot = "ud_glock_mag",
@@ -263,10 +264,68 @@ ECOSYSTEM.LoadoutEntries = {
             GAMEMODE.CommonAttSlots.uc_fg,
         },
     },
+
+    ["arccw_ud_m4a1"] = {
+        type = LDENTRY_TYPE_SWEP,
+        wepcat = LDENTRY_WEPCAT_RIFLE,
+        name = "M4A1",
+        class = "arccw_ud_m16",
+        icon = Material("arccw/weaponicons/arccw_ud_m16"),
+
+        cost_point = 5,
+        cost_cash = 2800,
+
+        atttype = ATTTYPE_ARCCW,
+        attachments = {
+            {
+                name = "Optic",
+                slot = {"optic"},
+                default = "ud_m16_rs",
+                removename = "Carry Handle",
+            },
+            {
+                name = "Barrel",
+                slot = "ud_m16_barrel",
+                default = "ud_m16_barrel_m4",
+                removename = "20\" Standard Barrel",
+            },
+            GAMEMODE.CommonAttSlots.acw_muzzle,
+            {
+                name = "Receiver",
+                slot = "ud_m16_receiver",
+                default = "ud_m16_receiver_auto",
+                removename = "Burst Receiver",
+            },
+            GAMEMODE.CommonAttSlots.acw_ub,
+            GAMEMODE.CommonAttSlots.acw_tac,
+            {
+                name = "Grip",
+                slot = "ud_m16_grip",
+            },
+            {
+                name = "Stock",
+                slot = "ud_m16_stock",
+                default = "ud_m16_stock_carbine",
+                removename = "Full Stock",
+            },
+            {
+                name = "Magazine",
+                slot = "ud_m16_mag",
+            },
+            GAMEMODE.CommonAttSlots.uc_ammo,
+            GAMEMODE.CommonAttSlots.uc_powder,
+            GAMEMODE.CommonAttSlots.uc_tp,
+            GAMEMODE.CommonAttSlots.uc_fg,
+        },
+    },
 }
 
 ECOSYSTEM.AttachmentType = ATTTYPE_ARCCW
 ECOSYSTEM.PartialAttachments = {
+
+    ---------------------------------------------
+    -- Glock 17
+    ---------------------------------------------
     ["ud_glock_slide_auto"] = {
         cost_point = 2,
         cost_cash = 1500,
@@ -298,8 +357,7 @@ ECOSYSTEM.PartialAttachments = {
         cost_point = 0,
     },
     ["ud_glock_frame_flared"] = {
-        cost_point = 1,
-        cost_cash = 800,
+        cost_point = 0,
     },
     ["ud_glock_frame_subcompact"] = {
         cost_point = 0,
@@ -308,14 +366,35 @@ ECOSYSTEM.PartialAttachments = {
         cost_point = 0,
     },
     ["ud_glock_mag_33"] = {
-        cost_point = 2,
+        cost_point = 1,
         cost_cash = 1200,
     },
     ["ud_glock_mag_100"] = {
-        cost_point = 3,
+        cost_point = 2,
         cost_cash = 2000,
     },
+    ["ud_glock_caliber_10auto"] = {
+        cost_point = 0,
+    },
+    ["ud_glock_caliber_22lr"] = {
+        cost_point = 0,
+    },
+    ["ud_glock_caliber_40sw"] = {
+        cost_point = 0,
+    },
+    ["ud_glock_caliber_45acp"] = {
+        cost_point = 0,
+    },
+    ["ud_glock_caliber_357sig"] = {
+        cost_point = 0,
+    },
+    ["ud_glock_caliber_380acp"] = {
+        cost_point = 0,
+    },
 
+    ---------------------------------------------
+    -- M16A2
+    ---------------------------------------------
     ["ud_m16_grip_ergo"] = {
         cost_point = 0,
     },
@@ -341,10 +420,17 @@ ECOSYSTEM.PartialAttachments = {
         cost_cash = 2000,
     },
     ["ud_m16_receiver_9mm"] = {
+        cost_point = 0,
+    },
+    ["ud_m16_receiver_50beo"] = {
         cost_point = 1,
         cost_cash = 800,
     },
     ["ud_m16_receiver_auto"] = {
+        cost_point = 2,
+        cost_cash = 1200,
+    },
+    ["ud_m16_receiver_a1"] = {
         cost_point = 2,
         cost_cash = 1200,
     },
@@ -353,6 +439,55 @@ ECOSYSTEM.PartialAttachments = {
     },
     ["ud_m16_receiver_cali"] = {
         cost_point = 0,
+    },
+
+    ---------------------------------------------
+    -- Uzi
+    ---------------------------------------------
+    ["ud_uzi_mag_20"] = {
+        cost_point = 0,
+    },
+    ["ud_uzi_mag_40"] = {
+        cost_point = 1,
+        cost_cash = 500,
+    },
+    ["ud_uzi_mag_100"] = {
+        cost_point = 3,
+        cost_cash = 500,
+    },
+    ["ud_uzi_body_civvy"] = {
+        cost_point = 0,
+    },
+
+    ---------------------------------------------
+    -- Mini-14
+    ---------------------------------------------
+    ["ud_mini14_receiver_22lr"] = {
+        cost_point = 0,
+    },
+    ["ud_mini14_receiver_auto"] = {
+        cost_point = 3,
+    },
+    ["ud_mini14_receiver_762"] = {
+        cost_point = 2,
+    },
+    ["ud_mini14_mag_10"] = {
+        cost_point = 0,
+    },
+    ["ud_mini14_mag_10_762"] = {
+        cost_point = 0,
+    },
+    ["ud_mini14_mag_30"] = {
+        cost_point = 1,
+    },
+    ["ud_mini14_mag_30_762"] = {
+        cost_point = 1,
+    },
+    ["ud_mini14_mag_42"] = {
+        cost_point = 2,
+    },
+    ["ud_mini14_mag_60"] = {
+        cost_point = 3,
     },
 }
 

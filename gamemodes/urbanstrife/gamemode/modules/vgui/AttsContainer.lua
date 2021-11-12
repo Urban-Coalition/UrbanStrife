@@ -28,6 +28,23 @@ local function btn(self, k, attname)
     return b
 end
 
+local function div(self)
+    local l = vgui.Create("DPanel", self)
+    l:SetTall(SS(3))
+    l:Dock(TOP)
+    l:DockMargin(0, SS(1), 0, 0)
+    l.Paint = function(pnl, w, h)
+        surface.SetDrawColor(GCLR_UP("t"))
+        surface.DrawRect(0, SS(1), w, SS(1))
+    end
+    l:SetZPos(zp)
+    zp = zp + 1
+    self:Add(l)
+    table.insert(self.Buttons, l)
+    return l
+end
+
+
 function PANEL:LoadButtons()
     for k, v in pairs(self.Buttons) do v:Remove() end
 
@@ -39,13 +56,30 @@ function PANEL:LoadButtons()
     local entry = GAMEMODE.LoadoutEntries[sel[1]] or {}
     if not entry.attachments then return end
 
+    local curentry = entry.attachments[self:GetIndex()]
+
     if self:GetListAll() then
-        for k, v in pairs(GAMEMODE:GetSortedAttsForEntry(entry.attachments[self:GetIndex()].slot)) do
+
+        -- default attachment
+        if curentry.default then
+            btn(self, self:GetIndex(), curentry.default)
+            btn(self, self:GetIndex(), "_remove")
+            div(self)
+        end
+
+        for k, v in pairs(GAMEMODE:GetSortedAttsForEntry(curentry.slot)) do
+            if v == curentry.default then continue end
             btn(self, self:GetIndex(), v)
         end
     else
         for k, v in SortedPairs(sel[2] or {}) do
-            btn(self, k)
+            if entry.attachments[k].default and (not v or entry.attachments[k].default == v) then
+                if v == nil then
+                    btn(self, k, "_remove")
+                end
+            else
+                btn(self, k)
+            end
         end
         btn(self)
     end

@@ -30,6 +30,9 @@ function PLAYER:Init()
         ["strife_secondary"] = {"arccw_ud_glock"},
         ["strife_armor"] = nil --{"armor_heavy"}
     }
+    if CLIENT then
+        GAMEMODE.NewLoadoutDirty = true
+    end
 
     -- Prevent knockback from damage
     -- becuase that is not gmod realism

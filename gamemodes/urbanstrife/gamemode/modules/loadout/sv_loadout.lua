@@ -32,6 +32,8 @@ net.Receive("loadout_update", function(len, ply)
                 end
             end
         end
+
+        print(GAMEMODE:GetLoadoutCost(ply.Loadout))
     end
 
     if ply:GetSpawnArea() == ply:Team() then
@@ -59,7 +61,7 @@ function GM:GiveLoadoutEntry(ply, id, atts, slot)
         if entry.atttype == ATTTYPE_ARCCW then
             wep:SetHolster_Time(1)
             wep:SetHolster_Entity(NULL)
-            if entry.atttype and entry.attachments and atts and GetConVar("arccw_attinv_free"):GetInt() == 0 then
+            if entry.atttype and entry.attachments and atts then
                 for k, v in pairs(entry.attachments) do
                     if not atts[k] then continue end
                     wep.Attachments[k].Installed = atts[k]
@@ -99,7 +101,7 @@ function GM:GiveLoadoutPlayer(ply, strip)
         ply:StripAmmo()
         ply.ArcCW_AttInv = nil
         ArcCW:PlayerSendAttInv(ply)
-        for _, v in pairs(ply.LastLoadout) do
+        for _, v in pairs(ply.LastLoadout or {}) do
             if v and v[1] and GAMEMODE.LoadoutEntries[v[1]].revoke then
                 GAMEMODE.LoadoutEntries[v[1]]:revoke(ply)
             end
@@ -122,3 +124,9 @@ function GM:GiveLoadoutPlayer(ply, strip)
         end
     end
 end
+
+net.Receive("loadout_open", function(len, ply)
+    if ply:GetSpawnArea() == ply:Team() then
+        GAMEMODE:GiveLoadoutPlayer(ply, true)
+    end
+end)

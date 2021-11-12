@@ -15,6 +15,8 @@ function PANEL:Init()
 
     self:SetState(LOADOUT_STATE_MAIN)
 
+    self.TotalCost = GAMEMODE:GetLoadoutCost(GAMEMODE.NewLoadout)
+
     self.Bottom = vgui.Create("DPanel", self)
     self.Bottom:SetTall(ScrH() * 0.05)
     self.Bottom:Dock(BOTTOM)
@@ -23,7 +25,7 @@ function PANEL:Init()
         surface.DrawRect(0, 0, w, h)
     end
     self.BottomClose = vgui.Create("DButton", self.Bottom)
-    self.BottomClose:SetWide(ScreenScale(48))
+    self.BottomClose:SetWide(ScreenScale(64))
     self.BottomClose:Dock(LEFT)
     self.BottomClose:DockMargin(ScreenScale(4), 0, 0, 0)
     self.BottomClose.Paint = function(pnl, w, h)
@@ -37,14 +39,19 @@ function PANEL:Init()
 
         local txt = "Return"
         if self:GetState() == LOADOUT_STATE_MAIN then
-            txt = GAMEMODE.NewLoadoutDirty and "Apply" or "Close"
+            txt = LocalPlayer():GetSpawnArea() == LocalPlayer():Team() and "Resupply" or (GAMEMODE.NewLoadoutDirty and "Apply") or "Close"
         end
         draw.SimpleTextOutlined(txt, "StrifeSS_16", w / 2, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, GCLR("shadow"))
         return true
     end
     self.BottomClose.DoClick = function(pnl)
         if self:GetState() == LOADOUT_STATE_MAIN then
-            if GAMEMODE.NewLoadoutDirty then GAMEMODE:SendLoadout() end
+            if GAMEMODE.NewLoadoutDirty then
+                GAMEMODE:SendLoadout()
+            elseif LocalPlayer():GetSpawnArea() == LocalPlayer():Team() then
+                net.Start("loadout_open")
+                net.SendToServer()
+            end
             self:Remove()
         elseif self:GetState() == LOADOUT_STATE_SLOT then
             self:UpdateState(LOADOUT_STATE_MAIN)
@@ -94,7 +101,7 @@ function PANEL:Init()
     self.LeftFootnote:SetTall(SS(20))
     self.LeftFootnote:Dock(BOTTOM)
     self.LeftFootnote.Paint = function(pnl, w, h)
-        draw.SimpleTextOutlined("LOREM IPSUM", "StrifeSS_16", 0, SS(2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, GCLR("shadow"))
+        draw.SimpleTextOutlined("Cost: " .. self.TotalCost, "StrifeSS_16", 0, SS(2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, GCLR("shadow"))
         surface.SetDrawColor(GCLR_UP("t"))
         surface.DrawRect(0, 0, w, SS(1))
     end
@@ -127,7 +134,7 @@ function PANEL:UpdateState(newstate)
         self:SetSlot(nil)
         self.LeftLayout:SetSlot(nil)
         self.LeftAtts:SetVisible(false)
-        self.BottomCancel:SetVisible(GAMEMODE.NewLoadoutDirty)
+        self.BottomCancel:SetVisible(GAMEMODE.NewLoadoutDirty or LocalPlayer():GetSpawnArea() == LocalPlayer():Team())
     end
     self.LeftLayout:LoadButtons()
 end
@@ -146,6 +153,7 @@ function PANEL:UpdateAtts()
     else
         self.LeftAtts:SetVisible(false)
     end
+    self.TotalCost = GAMEMODE:GetLoadoutCost(GAMEMODE.NewLoadout)
 end
 
 function PANEL:OnRemove()

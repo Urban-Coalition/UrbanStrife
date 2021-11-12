@@ -91,8 +91,14 @@ function PANEL:Paint(w, h)
 end
 
 function PANEL:DoClick()
+    local entry = GAMEMODE.LoadoutEntries[self:GetEntry()]
     if GAMEMODE.NewLoadout[self:GetSlot()] ~= self:GetEntry() then
         GAMEMODE.NewLoadout[self:GetSlot()] = {self:GetEntry(), {}}
+        for k, v in pairs(entry.attachments or {}) do
+            if v and v.default then
+                GAMEMODE.NewLoadout[self:GetSlot()][2][k] = v.default
+            end
+        end
         GAMEMODE.NewLoadoutDirty = true
         GAMEMODE.LoadoutPanel:UpdateAtts()
     end

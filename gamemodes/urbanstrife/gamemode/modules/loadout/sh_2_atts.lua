@@ -52,10 +52,10 @@ GM.CommonAttSlots = {
     },
 }
 
-GM.EntryAttachments = {}
+GM.EntryAttachments = GM.EntryAttachments or {}
+GM.EntryIDToAtt = GM.EntryIDToAtt or {}
+GM.EntryAttachmentNum = GM.EntryAttachmentNum or 0
 GM.PartialAttachments = {}
-GM.EntryIDToAtt = {}
-GM.EntryAttachmentNum = 0
 
 GM.EntryAttBit = nil
 function GM:GetAttBits()

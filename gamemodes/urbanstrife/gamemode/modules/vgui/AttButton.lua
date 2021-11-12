@@ -55,17 +55,25 @@ function PANEL:Think()
     end
 end
 
+local function active(self)
+    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
+    local attname = (slot and slot[2] and slot[2][self:GetIndex()])
+    return attname == self:GetAttName() or (not attname and self:GetAttName() == "_remove")
+end
+
 function PANEL:Paint(w, h)
     local c = GCLR("default")
 
+    local cattname = self:GetAttName()
     local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
     local entry = GAMEMODE.LoadoutEntries[slot and slot[1] or ""]
     local attname = (slot and slot[2] and slot[2][self:GetIndex()])
-    local att = GAMEMODE.EntryAttachments[self:GetAttName() or attname or ""]
+    local att = GAMEMODE.EntryAttachments[cattname or attname or ""]
+    local attlist = entry and entry.attachments[self:GetIndex()]
     local txt = "Add Attachment"
 
-    if self:GetAttName() then
-        if attname == self:GetAttName() then
+    if cattname then
+        if active(self) then
             c = self:IsHovered() and GCLR("active_hover_t") or GCLR("active")
         else
             c = self:IsHovered() and GCLR("empty_hover_t") or GCLR("empty")
@@ -77,16 +85,23 @@ function PANEL:Paint(w, h)
     surface.SetDrawColor(c:Unpack())
     surface.DrawRect(0, 0, w, h)
 
-    if (self:GetAttName() and attname == self:GetAttName()) or (not self:GetAttName() and self:GetIndex()) then
+    if active(self) or (not cattname and self:GetIndex()) then
         surface.SetDrawColor(GCLR_UP("t"))
         surface.DrawRect(0, 0, ScreenScale(2), h)
     end
 
-    if self:GetAttName() or attname then
-        txt = GAMEMODE:GetAttName(self:GetAttName() or attname)
-        draw.SimpleText(att.cost_point, "StrifeSS_8", w - ScreenScale(6), h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    if cattname == "_remove" then
+        txt = attlist.removename or "No Attachment"
+        draw.SimpleText(attlist.removecost_point or "0", "StrifeSS_8", w - ScreenScale(6), h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    elseif cattname or attname then
+        txt = GAMEMODE:GetAttName(cattname or attname)
+        local cost = att and att.cost_point or "?"
+        if attlist.default ~= nil and cattname == attlist.default then
+            cost = "-"
+        end
+        draw.SimpleText(cost, "StrifeSS_8", w - ScreenScale(6), h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     elseif self:GetIndex() then
-        txt = entry.attachments[self:GetIndex()].name
+        txt = attlist.name
     end
 
     draw.SimpleText(txt, "StrifeSS_8", ScreenScale(4), h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
@@ -95,9 +110,17 @@ end
 
 function PANEL:DoClick()
     local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
+    --local entry = GAMEMODE.LoadoutEntries[slot and slot[1] or ""]
+
     if slot and self:GetAttName() and (not slot[2] or self:GetAttName() ~= slot[2][self:GetIndex()]) then
+
         slot[2] = slot[2] or {}
-        slot[2][self:GetIndex()] = self:GetAttName()
+        if self:GetAttName() == "_remove" then
+            slot[2][self:GetIndex()] = nil
+        else
+            slot[2][self:GetIndex()] = self:GetAttName()
+        end
+
         GAMEMODE.NewLoadoutDirty = true
     else
         GAMEMODE.LoadoutPanel:EnterSlot(self:GetSlot())
