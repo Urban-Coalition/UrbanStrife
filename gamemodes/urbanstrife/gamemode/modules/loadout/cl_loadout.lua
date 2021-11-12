@@ -29,6 +29,9 @@ net.Receive("loadout_open", function()
         GAMEMODE.LoadoutPanel:Remove()
         GAMEMODE.LoadoutPanel = nil
     else
+        if ArcCW and ArcCW.InvHUD then
+            ArcCW.Inv_Hidden = true
+        end
         GAMEMODE:CreateLoadoutPanel()
     end
 end)

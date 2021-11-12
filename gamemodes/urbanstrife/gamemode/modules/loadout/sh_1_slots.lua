@@ -61,6 +61,11 @@ GM.LoadoutSlots = {
     },
 }
 
+function GM:GetLoadoutBudget()
+    -- TODO: Game type should change this
+    return 12
+end
+
 function GM:EntryFitsSlot(slot, entry)
     if slot.whitelist and not slot.whitelist[entry.shortname] then return false end
     if slot.wepcats and (entry.wepcat == nil or not slot.wepcats[entry.wepcat]) then return false end

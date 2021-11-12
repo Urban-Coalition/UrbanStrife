@@ -3,6 +3,15 @@ local PANEL = {}
 AccessorFunc(PANEL, "Slot", "Slot")
 AccessorFunc(PANEL, "Entry", "Entry")
 
+local function afford(self)
+    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
+    local slotentry = slot and slot[1]
+    local entry = GAMEMODE.LoadoutEntries[self:GetEntry()]
+    local cost = entry.cost_point or 0
+    local curentry = slotentry and GAMEMODE.LoadoutEntries[slotentry]
+    return GAMEMODE:GetLoadoutCost(GAMEMODE.NewLoadout) + cost - (curentry and curentry.cost_point or 0) <= GAMEMODE:GetLoadoutBudget()
+end
+
 function PANEL:Init()
 end
 
@@ -54,13 +63,19 @@ end
 
 function PANEL:Paint(w, h)
     local c = GCLR("default")
+    local ctxt = color_white
 
     local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
     local slotentry = slot and slot[1]
     local entry = GAMEMODE.LoadoutEntries[self:GetEntry()]
+    local cost = entry.cost_point or 0
+    local curentry = slotentry and GAMEMODE.LoadoutEntries[slotentry]
 
     if slotentry == self:GetEntry() then
         c = self:IsHovered() and GCLR("active_hover_t") or GCLR("active")
+    elseif not afford(self) then
+        c = GCLR("empty")
+        ctxt = Color(255, 0, 0)
     else
         if self:IsHovered() then
             c = GCLR("hover_t")
@@ -76,7 +91,7 @@ function PANEL:Paint(w, h)
     end
 
     draw.SimpleText(GAMEMODE:GetEntryName(self:GetEntry()), "StrifeSS_12", ScreenScale(4), h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-    draw.SimpleText(entry.cost_point, "StrifeSS_12", w - ScreenScale(8), h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(entry.cost_point, "StrifeSS_12", w - ScreenScale(8), h / 2, ctxt, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
     -- draw icon
     if entry.icon and not entry.icon:IsError() then
@@ -92,7 +107,7 @@ end
 
 function PANEL:DoClick()
     local entry = GAMEMODE.LoadoutEntries[self:GetEntry()]
-    if GAMEMODE.NewLoadout[self:GetSlot()] ~= self:GetEntry() then
+    if GAMEMODE.NewLoadout[self:GetSlot()] ~= self:GetEntry() and afford(self) then
         GAMEMODE.NewLoadout[self:GetSlot()] = {self:GetEntry(), {}}
         for k, v in pairs(entry.attachments or {}) do
             if v and v.default then

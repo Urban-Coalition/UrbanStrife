@@ -101,7 +101,12 @@ function PANEL:Init()
     self.LeftFootnote:SetTall(SS(20))
     self.LeftFootnote:Dock(BOTTOM)
     self.LeftFootnote.Paint = function(pnl, w, h)
-        draw.SimpleTextOutlined("Cost: " .. self.TotalCost, "StrifeSS_16", 0, SS(2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, GCLR("shadow"))
+        local max = GAMEMODE:GetLoadoutBudget()
+        if max > 0 then
+            draw.SimpleTextOutlined("Cost: " .. self.TotalCost .. " / " .. max, "StrifeSS_16", 0, SS(2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, GCLR("shadow"))
+        else
+            draw.SimpleTextOutlined("Cost: " .. self.TotalCost, "StrifeSS_16", 0, SS(2), color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP, 1, GCLR("shadow"))
+        end
         surface.SetDrawColor(GCLR_UP("t"))
         surface.DrawRect(0, 0, w, SS(1))
     end
@@ -153,6 +158,10 @@ function PANEL:UpdateAtts()
     else
         self.LeftAtts:SetVisible(false)
     end
+    self:RecalcCost()
+end
+
+function PANEL:RecalcCost()
     self.TotalCost = GAMEMODE:GetLoadoutCost(GAMEMODE.NewLoadout)
 end
 

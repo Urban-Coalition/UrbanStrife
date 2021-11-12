@@ -32,8 +32,12 @@ net.Receive("loadout_update", function(len, ply)
                 end
             end
         end
+    end
 
-        print(GAMEMODE:GetLoadoutCost(ply.Loadout))
+    if GAMEMODE:GetLoadoutCost(ply.Loadout) > GAMEMODE:GetLoadoutBudget() then
+        ply.Loadout = ply.LastLoadout
+        print("loadout exceeds budget!")
+        return
     end
 
     if ply:GetSpawnArea() == ply:Team() then

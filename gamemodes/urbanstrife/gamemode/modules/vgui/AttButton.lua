@@ -4,6 +4,64 @@ AccessorFunc(PANEL, "Slot", "Slot")
 AccessorFunc(PANEL, "Index", "Index")
 AccessorFunc(PANEL, "AttName", "AttName")
 
+local function defaultatt(self)
+
+    if self.datt ~= nil then return self.datt
+    elseif self.datt == false then return nil end
+
+    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
+    local entry = GAMEMODE.LoadoutEntries[slot and slot[1] or ""]
+    local attlist = entry and entry.attachments[self:GetIndex()]
+    if not attlist or not attlist.default then
+        self.datt = false
+        return nil
+    end
+    self.datt = attlist.default
+    return self.datt
+end
+
+local function active(self)
+    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
+    local attname = (slot and slot[2] and slot[2][self:GetIndex()])
+    return attname == self:GetAttName() or (not attname and self:GetAttName() == "_remove")
+end
+
+local function cost(self)
+    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
+    local cattname = self:GetAttName()
+    local attname = (slot and slot[2] and slot[2][self:GetIndex()])
+    local entry = GAMEMODE.LoadoutEntries[slot and slot[1] or ""]
+    local attlist = entry and entry.attachments[self:GetIndex()]
+
+    if cattname == "_remove" then
+        return attlist.removecost_point or 0
+    elseif attlist and attlist.default ~= nil and cattname == attlist.default then
+        return 0
+    else
+        return GAMEMODE.EntryAttachments[cattname or attname or ""].cost_point or 0
+    end
+end
+
+local function canafford(self)
+    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
+    local attname = (slot and slot[2] and slot[2][self:GetIndex()])
+    local entry = GAMEMODE.LoadoutEntries[slot and slot[1] or ""]
+    local attlist = entry and entry.attachments[self:GetIndex()]
+    local curatt = attname and GAMEMODE.EntryAttachments[attname]
+    local curcost = curatt and curatt.cost_point or 0
+
+    if curatt and attlist.default ~= nil and attname == attlist.default then
+        curcost = 0
+    elseif attlist.default ~= nil and attname == nil then
+        curcost = attlist.removecost_point or 0
+    end
+
+    return GAMEMODE:GetLoadoutCost(GAMEMODE.NewLoadout)
+            + cost(self) - curcost
+            <= GAMEMODE:GetLoadoutBudget()
+end
+
+
 function PANEL:Init()
 end
 
@@ -12,6 +70,7 @@ function PANEL:OnRemove()
 end
 
 function PANEL:PerformLayout(w, h)
+    self.datt = nil
     if GAMEMODE.LoadoutPanel and self:GetIndex() then
         if not self.RemoveBtn then
             self.RemoveBtn = vgui.Create("DButton", GAMEMODE.LoadoutPanel)
@@ -29,8 +88,10 @@ function PANEL:PerformLayout(w, h)
                 return true
             end
             self.RemoveBtn.DoClick = function(pnl)
-                GAMEMODE.NewLoadout[self:GetSlot()][2][self:GetIndex()] = nil
+                GAMEMODE.NewLoadout[self:GetSlot()][2][self:GetIndex()] = defaultatt(self)
                 GAMEMODE.NewLoadoutDirty = true
+                GAMEMODE.LoadoutPanel:RecalcCost()
+                pnl:SetVisible(false)
                 if not self:GetAttName() then self:Remove() end
             end
         end
@@ -42,8 +103,7 @@ function PANEL:PerformLayout(w, h)
 end
 
 function PANEL:Think()
-    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
-    if self.RemoveBtn and ((not self:GetAttName() and self:GetIndex()) or (slot and slot[2] and slot[2][self:GetIndex()] == self:GetAttName())) then
+    if self.RemoveBtn and ((not self:GetAttName() and self:GetIndex()) or (active(self) and self:GetAttName() ~= defaultatt(self))) then
         local w, h = self:GetSize()
         local x, y = GAMEMODE.LoadoutPanel:GetChildPosition(self)
         local mx, my = input.GetCursorPos()
@@ -55,14 +115,9 @@ function PANEL:Think()
     end
 end
 
-local function active(self)
-    local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
-    local attname = (slot and slot[2] and slot[2][self:GetIndex()])
-    return attname == self:GetAttName() or (not attname and self:GetAttName() == "_remove")
-end
-
 function PANEL:Paint(w, h)
     local c = GCLR("default")
+    local ctxt = color_white
 
     local cattname = self:GetAttName()
     local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot(), true)
@@ -75,8 +130,11 @@ function PANEL:Paint(w, h)
     if cattname then
         if active(self) then
             c = self:IsHovered() and GCLR("active_hover_t") or GCLR("active")
-        else
+        elseif not canafford(self) then
             c = self:IsHovered() and GCLR("empty_hover_t") or GCLR("empty")
+            ctxt = Color(255, 0, 0)
+        elseif self:IsHovered() then
+            c = GCLR("hover_t")
         end
     elseif self:IsHovered() then
         c = GCLR("hover_t")
@@ -95,11 +153,11 @@ function PANEL:Paint(w, h)
         draw.SimpleText(attlist.removecost_point or "0", "StrifeSS_8", w - ScreenScale(6), h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     elseif cattname or attname then
         txt = GAMEMODE:GetAttName(cattname or attname)
-        local cost = att and att.cost_point or "?"
+        local costtxt = att and att.cost_point or "?"
         if attlist.default ~= nil and cattname == attlist.default then
-            cost = "-"
+            costtxt = "-"
         end
-        draw.SimpleText(cost, "StrifeSS_8", w - ScreenScale(6), h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(costtxt, "StrifeSS_8", w - ScreenScale(6), h / 2, ctxt, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
     elseif self:GetIndex() then
         txt = attlist.name
     end
@@ -114,6 +172,10 @@ function PANEL:DoClick()
 
     if slot and self:GetAttName() and (not slot[2] or self:GetAttName() ~= slot[2][self:GetIndex()]) then
 
+        if not canafford(self) then
+            return
+        end
+
         slot[2] = slot[2] or {}
         if self:GetAttName() == "_remove" then
             slot[2][self:GetIndex()] = nil
@@ -122,6 +184,7 @@ function PANEL:DoClick()
         end
 
         GAMEMODE.NewLoadoutDirty = true
+        GAMEMODE.LoadoutPanel:RecalcCost()
     else
         GAMEMODE.LoadoutPanel:EnterSlot(self:GetSlot())
     end
