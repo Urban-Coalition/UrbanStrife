@@ -34,7 +34,7 @@ function PANEL:LoadButtons()
             self.Buttons[k]:SetZPos(i)
             i = i + 1
             local slot = GAMEMODE:GetLoadoutSlot(k) or {}
-            if slot[1] and GAMEMODE:EntryShowAtts(slot[1]) and GAMEMODE.LoadoutEntries[slot[1]].attachments then
+            if slot[1] and not GAMEMODE:EntryAttsFree(slot[1]) and GAMEMODE.LoadoutEntries[slot[1]].attachments then
                 local con = vgui.Create("AttsContainer", self)
                 self.Buttons[k].AttsContainer = con
                 con:SetSlot(k)

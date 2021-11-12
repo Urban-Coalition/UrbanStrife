@@ -118,7 +118,7 @@ function GM:GetAttsForEntry(slot)
 
     for id, att in pairs(self.EntryAttachments) do
         local has = false
-        for _, s in pairs(slot) do
+        for _, s in pairs(slot or {}) do
             if table.HasValue(att.slot, s) then has = true break end
         end
         if has then table.insert(ret, id) end

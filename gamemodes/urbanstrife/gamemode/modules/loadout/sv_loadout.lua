@@ -1,16 +1,28 @@
 util.AddNetworkString("loadout_open")
 util.AddNetworkString("loadout_update")
 
+local function deepcopy(obj)
+    if type(obj) ~= "table" then return obj end
+    local res = {}
+    for k, v in pairs(obj) do res[deepcopy(k)] = deepcopy(v) end
+    return res
+end
+
 net.Receive("loadout_update", function(len, ply)
-    ply.LastLoadout = {}
+    ply.LastLoadout = deepcopy(ply.Loadout)
+
     local amt = net.ReadUInt(8)
     for i = 1, amt do
         local slotname = net.ReadString()
         local slot = GAMEMODE.LoadoutSlots[slotname]
 
-        if not slot then print("no valid slot " .. tostring(slotname)) return end
+        if not slot then
+            print("no valid slot " .. tostring(slotname))
+            ply.Loadout = ply.LastLoadout
+            return
+        end
 
-        ply.LastLoadout[slotname] = table.Copy(ply.Loadout[slotname])
+        --ply.LastLoadout[slotname] = table.Copy(ply.Loadout[slotname])
 
         local id = net.ReadUInt(GAMEMODE:GetEntryBits())
         if id == 0 then
@@ -18,7 +30,11 @@ net.Receive("loadout_update", function(len, ply)
         else
             local entry = GAMEMODE.LoadoutEntries[GAMEMODE.LoadoutIDToEntry[id]]
             if not entry then continue end
-            if not GAMEMODE:EntryFitsSlot(slot, entry) then print("entry " .. tostring(GAMEMODE.LoadoutIDToEntry[id]) .. " does not fit slot " .. slotname) return end
+            if not GAMEMODE:EntryFitsSlot(slot, entry) then
+                print("entry " .. tostring(GAMEMODE.LoadoutIDToEntry[id]) .. " does not fit slot " .. slotname)
+                ply.Loadout = ply.LastLoadout
+                return
+            end
 
             ply.Loadout[slotname] = {entry.shortname, nil}
 
@@ -27,7 +43,12 @@ net.Receive("loadout_update", function(len, ply)
                 for j = 1, #entry.attachments do
                     local attid = net.ReadUInt(GAMEMODE:GetAttBits())
                     if attid ~= 0 then
-                        ply.Loadout[slotname][2][j] = GAMEMODE.EntryIDToAtt[attid]
+                        if entry.attachments[j].default and entry.attachments[j].fixed then
+                            ply.Loadout[slotname][2][j] = entry.attachments[j].default
+                        else
+                            -- TODO: Check slot fitting
+                            ply.Loadout[slotname][2][j] = GAMEMODE.EntryIDToAtt[attid]
+                        end
                     end
                 end
             end

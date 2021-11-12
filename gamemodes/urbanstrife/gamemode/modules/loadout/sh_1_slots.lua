@@ -70,6 +70,8 @@ function GM:EntryFitsSlot(slot, entry)
     if slot.whitelist and not slot.whitelist[entry.shortname] then return false end
     if slot.wepcats and (entry.wepcat == nil or not slot.wepcats[entry.wepcat]) then return false end
     if slot.filter and not slot:filter(entry.shortname, entry) then return false end
+    if entry.hiddenwhenfree and GAMEMODE:EntryAttsFree(entry) or
+            entry.hiddenunlessfree and not GAMEMODE:EntryAttsFree(entry) then return false end
     return true
 end
 

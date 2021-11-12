@@ -65,14 +65,14 @@ function GM:GetEntryName(entry)
     end
 end
 
-function GM:EntryShowAtts(entry)
+function GM:EntryAttsFree(entry)
     if isstring(entry) then entry = GAMEMODE.LoadoutEntries[entry] end
     if not entry or not entry.atttype or not entry.attachments then return false end
     if entry.atttype == ATTTYPE_ARCCW then
-        return not (GetConVar("arccw_attinv_free"):GetBool() and GetConVar("arccw_enable_customization"):GetInt() > 0)
+        return GetConVar("arccw_attinv_free"):GetBool() and GetConVar("arccw_enable_customization"):GetInt() > 0
     elseif entry.atttype == ATTTYPE_TACRP then
-        return not GetConVar("tacrp_free_atts"):GetBool()
+        return GetConVar("tacrp_free_atts"):GetBool()
     else
-        return false
+        return true
     end
 end

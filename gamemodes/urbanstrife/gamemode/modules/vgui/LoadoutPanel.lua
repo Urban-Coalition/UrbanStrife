@@ -151,7 +151,7 @@ end
 
 function PANEL:UpdateAtts()
     local slot = GAMEMODE:GetLoadoutSlot(self:GetSlot())
-    if GAMEMODE:EntryShowAtts(slot and slot[1]) then
+    if not GAMEMODE:EntryAttsFree(slot and slot[1]) then
         self.LeftAtts:SetVisible(true)
         self.LeftAtts:SetSlot(self:GetSlot())
         self.LeftAtts:LoadButtons()

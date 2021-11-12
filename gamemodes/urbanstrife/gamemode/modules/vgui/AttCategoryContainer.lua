@@ -47,6 +47,7 @@ function PANEL:LoadButtons()
 
     for i, s in pairs(entry.attachments) do
         if not s or not istable(s) then continue end
+        if s.default and s.fixed then continue end
         local t = title(self, s.name)
         t:SetZPos(2 * (i - 1) + 1)
         local c = container(self, i)
