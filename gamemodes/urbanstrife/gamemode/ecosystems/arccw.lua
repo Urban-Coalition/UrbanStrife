@@ -3,7 +3,7 @@ ECOSYSTEM = {}
 ECOSYSTEM.Name = "ArcCW"
 
 function ECOSYSTEM:Check()
-    return ArcCW
+    return ArcCW ~= nil
 end
 
 function ECOSYSTEM:OnLoad()

@@ -589,7 +589,7 @@ ECOSYSTEM.PartialAttachments = {
 }
 
 function ECOSYSTEM:Check()
-    return ArcCW and (weapons.Get("arccw_ud_glock") ~= nil)
+    return ArcCW ~= nil and ArcCW.UC ~= nil and (weapons.Get("arccw_ud_glock") ~= nil)
 end
 
 function ECOSYSTEM:OnLoad()
