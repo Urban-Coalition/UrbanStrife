@@ -35,23 +35,25 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
     if ply ~= dmginfo:GetAttacker() and (dmginfo:GetAttacker():IsPlayer() and ply:Team() == dmginfo:GetAttacker():Team()) then return true end
     if ply:GetSpawnArea() == ply:Team() then return true end
 
-    if hitgroup == HITGROUP_HEAD then
-        if dmginfo:IsDamageType(DMG_BUCKSHOT) then
-            dmginfo:ScaleDamage(1.5)
-        else
-            dmginfo:ScaleDamage(3)
-            dmginfo:SetDamageForce(dmginfo:GetDamageForce() * 2)
-            ply:EmitSound("player/bhit_helmet-1.wav", 110, math.random(90, 110))
-            if dmginfo:GetDamage() >= ply:Health() then
-                ply:EmitSound("player/headshot" .. math.random(1, 2) .. ".wav", 125, 100)
+    if GAMEMODE.OptionConvars.urbanstrife_damage_limbmultiplier:GetBool() then
+        if hitgroup == HITGROUP_HEAD then
+            if dmginfo:IsDamageType(DMG_BUCKSHOT) then
+                dmginfo:ScaleDamage(1.5)
+            else
+                dmginfo:ScaleDamage(3)
+                dmginfo:SetDamageForce(dmginfo:GetDamageForce() * 2)
+                ply:EmitSound("player/bhit_helmet-1.wav", 110, math.random(90, 110))
+                if dmginfo:GetDamage() >= ply:Health() then
+                    ply:EmitSound("player/headshot" .. math.random(1, 2) .. ".wav", 125, 100)
+                end
             end
+        elseif hitgroup == HITGROUP_CHEST then
+            dmginfo:ScaleDamage(1.1)
+        elseif hitgroup == HITGROUP_LEFTARM or hitgroup == HITGROUP_RIGHTARM then
+            dmginfo:ScaleDamage(0.75)
+        elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
+            dmginfo:ScaleDamage(0.5)
         end
-    elseif hitgroup == HITGROUP_CHEST then
-        dmginfo:ScaleDamage(1.1)
-    elseif hitgroup == HITGROUP_LEFTARM or hitgroup == HITGROUP_RIGHTARM then
-        dmginfo:ScaleDamage(0.75)
-    elseif hitgroup == HITGROUP_LEFTLEG or hitgroup == HITGROUP_RIGHTLEG then
-        dmginfo:ScaleDamage(0.5)
     end
 
     local attacker = dmginfo:GetAttacker()
