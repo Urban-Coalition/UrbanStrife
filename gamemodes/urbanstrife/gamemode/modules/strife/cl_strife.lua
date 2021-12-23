@@ -4,7 +4,7 @@ end)
 
 local last_advantage = 0
 hook.Add("HUDPaint", "Strife", function()
-    if IsValid(GAMEMODE.LoadoutPanel) then return end
+    if IsValid(GAMEMODE.LoadoutPanel) or not GetConVar("cl_drawhud"):GetBool() then return end
     if GAMEMODE:GetRoundState() == ROUND_STRIFE then
         --draw.SimpleText("STRIFE", "StrifeSS_12", ScrW() * 0.5, ScreenScale(4), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
         draw.SimpleTextOutlined("SEC", "StrifeSS_12", ScrW() * 0.4 - 4, ScrH() - ScreenScale(2), color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM, 1, TCLR_DARK[TEAM_CT])
