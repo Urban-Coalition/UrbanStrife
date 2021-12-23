@@ -105,3 +105,9 @@ end
 function GM:GetFallDamage(ply, speed)
     return speed / 10
 end
+
+hook.Add( "PlayerFootstep", "CustomFootstep", function( ply, pos, foot, sound, volume, rf )
+    if ply:GetVelocity():Length() > ply:GetWalkSpeed() then
+        ply:EmitSound("npc/combine_soldier/gear" .. math.random(1, 6) .. ".wav", 75, math.random() * 10 + 95, 0.5)
+    end
+end )
