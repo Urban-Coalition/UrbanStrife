@@ -3,5 +3,5 @@ GM.OptionConvars = {
 }
 
 for k, v in pairs(GM.OptionConvars) do
-    CreateConVar(k, unpack(v))
+    GM.OptionConvars[k] = CreateConVar(k, unpack(v))
 end
