@@ -57,12 +57,13 @@ function GM:GetEntryName(entry)
     if isstring(entry) then
         entry = self.LoadoutEntries[entry]
     end
-    if not entry then return end
+    if not entry then return "INVALID ENTRY" end
     if entry.GetName then return entry:GetName() end
     if entry.name then return entry.name end
     if entry.type == LDENTRY_TYPE_SWEP then
         return weapons.Get(entry.class).PrintName
     end
+    return "???"
 end
 
 function GM:EntryAttsFree(entry)

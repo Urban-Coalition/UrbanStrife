@@ -26,9 +26,17 @@ end
 
 function GM:Initialize()
     if self.INITIALIZE_COMPLETE then return end
+
     if SERVER then self:StrifeInitialize() end
+
     self:LoadEcosystems()
+    self:LoadEcosystems("/urbanstrife/ecosystems/")
+
+    self:LoadGameTypes()
+    self:LoadGameTypes("/urbanstrife/gametypes/")
+
     self:InitializeAtts()
+
     self.INITIALIZE_COMPLETE = true
 end
 
@@ -82,5 +90,3 @@ for _, f in SortedPairs(file.Find(path .. "/vgui/*.lua", "LUA"), false) do
         include(path .. "/vgui/" .. f)
     end
 end
-
--- TODO: Load gametypes

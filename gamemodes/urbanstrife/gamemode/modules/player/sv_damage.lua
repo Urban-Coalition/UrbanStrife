@@ -37,16 +37,7 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
 
     if GAMEMODE.OptionConvars.urbanstrife_damage_limbmultiplier:GetBool() then
         if hitgroup == HITGROUP_HEAD then
-            if dmginfo:IsDamageType(DMG_BUCKSHOT) then
-                dmginfo:ScaleDamage(1.5)
-            else
-                dmginfo:ScaleDamage(3)
-                dmginfo:SetDamageForce(dmginfo:GetDamageForce() * 2)
-                ply:EmitSound("player/bhit_helmet-1.wav", 110, math.random(90, 110))
-                if dmginfo:GetDamage() >= ply:Health() then
-                    ply:EmitSound("player/headshot" .. math.random(1, 2) .. ".wav", 125, 100)
-                end
-            end
+            dmginfo:ScaleDamage(dmginfo:IsDamageType(DMG_BUCKSHOT) and 1.5 or 3)
         elseif hitgroup == HITGROUP_CHEST then
             dmginfo:ScaleDamage(1.1)
         elseif hitgroup == HITGROUP_LEFTARM or hitgroup == HITGROUP_RIGHTARM then
@@ -56,13 +47,21 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
         end
     end
 
+    if hitgroup == HITGROUP_HEAD and not dmginfo:IsDamageType(DMG_BUCKSHOT) then
+        dmginfo:SetDamageForce(dmginfo:GetDamageForce() * 2)
+        ply:EmitSound("player/bhit_helmet-1.wav", 90, math.random(90, 110))
+        if dmginfo:GetDamage() >= ply:Health() then
+            ply:EmitSound("player/headshot" .. math.random(1, 2) .. ".wav", 110, 100)
+        end
+    end
+
     local attacker = dmginfo:GetAttacker()
     if dmginfo:IsBulletDamage() and attacker:IsPlayer() then
         local wep = attacker:GetActiveWeapon()
         local typ = IsValid(wep) and game.GetAmmoName(wep:GetPrimaryAmmoType() or "")
         if wep.ArcCW then typ = wep:GetBuff_Override("PenetrationAmmoType", typ) end
         local dmglvl = ply:GetNWInt("ArmorLevel", 0)
-        local multtbl = GAMEMODE.ArmorDamageMults[string.lower(typ)] or {1, 0.9, 0.8}
+        local multtbl = GAMEMODE.ArmorDamageMults[string.lower(typ)] or {1, 0.9, 0.8, 0.7}
         if dmglvl > 0 and (hitgroup == HITGROUP_CHEST or hitgroup == HITGROUP_STOMACH) then
             dmginfo:ScaleDamage(multtbl[dmglvl + 1])
             ply:EmitSound("player/kevlar" .. math.random(1, 5) .. ".wav", 100, math.random(90, 110))
