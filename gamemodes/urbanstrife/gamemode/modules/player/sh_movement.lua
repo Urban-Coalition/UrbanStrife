@@ -106,8 +106,14 @@ function GM:GetFallDamage(ply, speed)
     return speed / 10
 end
 
-hook.Add( "PlayerFootstep", "CustomFootstep", function( ply, pos, foot, sound, volume, rf )
-    if ply:GetVelocity():Length() > ply:GetWalkSpeed() then
-        ply:EmitSound("npc/combine_soldier/gear" .. math.random(1, 6) .. ".wav", 75, math.random() * 10 + 95, 0.5)
+hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, s, volume, rf)
+    if SERVER then
+        if not ply:IsOnGround() then
+            -- something about jumping
+        elseif ply:GetVelocity():Length() > ply:GetWalkSpeed() then
+            ply:EmitSound("npc/combine_soldier/gear" .. math.random(1, 6) .. ".wav", 80, math.random() * 10 + 95, volume)
+        end
+        ply:EmitSound(s, 80, math.random() * 10 + 95, volume)
+        return true
     end
-end )
+end)
