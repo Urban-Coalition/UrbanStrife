@@ -1,4 +1,4 @@
-net.Receive("us_strife_update", function()
+net.Receive("us_strifeupdate", function()
     GAMEMODE.StrifeAdvantage = net.ReadFloat()
 end)
 

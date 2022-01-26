@@ -84,6 +84,8 @@ function GM:GiveLoadoutEntry(ply, id, atts, slot)
     if entry.class then
         local wep = ply:Give(entry.class, entry.nodefaultclip)
 
+        if not IsValid(wep) then print("failed to give weapon " .. entry.class .. " to " .. tostring(ply) .. "!") return end
+
         if entry.atttype == ATTTYPE_ARCCW then
             wep:SetHolster_Time(1)
             wep:SetHolster_Entity(NULL)

@@ -78,7 +78,7 @@ GAMETYPE.Spawning.AlignTimerMin = {[0] = 0}
 -- The delay before a player/team respawns
 GAMETYPE.Spawning.Delay = {[0] = 10}
 
--- The amount of respawns / waves each team has
+-- The amount of respawns / waves each team has. 0 means infinite
 GAMETYPE.Spawning.Ticket = {[0] = 0}
 
 -- Use neutral spawns for both teams instead of team-specific spawns
@@ -97,10 +97,11 @@ GAMETYPE.WinCond = {}
 -- In a timeout, the team with a higher score wins
 GAMETYPE.WinCond.Score = false
 
--- Return the score count needed to win
-GAMETYPE.WinCond.GetScoreLimit = function()
-    return 30
-end
+-- A static score needed to win
+GAMETYPE.WinCond.ScoreLimit = 30
+
+-- Return the score count needed to win; Overrides ScoreLimit
+GAMETYPE.WinCond.GetScoreLimit = nil --function() return 30 end
 
 -- If a team's ticket reaches zero and all of their players die, the other team wins
 GAMETYPE.WinCond.Eliminate = true

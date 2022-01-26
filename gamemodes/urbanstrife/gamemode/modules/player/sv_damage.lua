@@ -23,7 +23,7 @@ GM.ArmorDamageMults = {
     ["357"] = {1.75, 1.25, 0.75, 0.5},
     ["smg1"] = {1.1, 0.9, 0.8, 0.7},
     ["ar2"] = {1.5, 1.25, 1.1, 0.85},
-    ["SniperPenetratedRound"] = {1.2, 1.1, 1, 0.9},
+    ["sniperpenetratedround"] = {1.2, 1.1, 1, 0.9},
     ["buckshot"] = {0.8, 0.6, 0.4, 0.2},
 }
 GM.ArmorSpeedMults = {0.88, 0.82}
@@ -35,7 +35,7 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
     if ply ~= dmginfo:GetAttacker() and (dmginfo:GetAttacker():IsPlayer() and ply:Team() == dmginfo:GetAttacker():Team()) then return true end
     if ply:GetSpawnArea() == ply:Team() then return true end
 
-    if GAMEMODE.OptionConvars.urbanstrife_damage_limbmultiplier:GetBool() then
+    if GAMEMODE.OptionConvars.damage_limbmultiplier:GetBool() then
         if hitgroup == HITGROUP_HEAD then
             dmginfo:ScaleDamage(dmginfo:IsDamageType(DMG_BUCKSHOT) and 1.5 or 3)
         elseif hitgroup == HITGROUP_CHEST then
@@ -68,7 +68,6 @@ function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
         else
             dmginfo:ScaleDamage(multtbl[1])
         end
-        print(typ, multtbl[dmglvl + 1])
     end
 end
 
@@ -78,3 +77,5 @@ hook.Add("EntityTakeDamage", "ArmorBlastDamage", function(ply, dmg)
         dmg:ScaleDamage(GAMEMODE.ArmorBlastDamageMults[ply:GetNWInt("ArmorLevel", 0)])
     end
 end)
+
+function GM:PlayerDeathSound() return true end

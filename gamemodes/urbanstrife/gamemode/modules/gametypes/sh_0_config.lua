@@ -13,6 +13,8 @@ SPAWNMODE_NONE = 0
 SPAWNMODE_TIME = 1
 -- Wave-based (each wave respawns all dead players)
 SPAWNMODE_WAVE = 2
+-- Default (click anywhere to respawn)
+SPAWNMODE_DEFAULT = 3
 
 --[[
     Information about all possible configurations of a gametype, hooks not included.
@@ -63,6 +65,7 @@ GM.GameTypeConfiguration = {
         category = true,
         entries = {
             Score = {type = GTCFG_BOOL},
+            ScoreLimit = {type = GTCFG_INT},
             GetScoreLimit = {type = GTCFG_FUNC},
             Eliminate = {type = GTCFG_BOOL},
             InstantEliminate = {type = GTCFG_BOOL},

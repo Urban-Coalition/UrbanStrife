@@ -1,4 +1,4 @@
-util.AddNetworkString("us_strife_update")
+util.AddNetworkString("us_strifeupdate")
 
 function GM:StrifeInitialize()
     game.CleanUpMap()
@@ -6,7 +6,7 @@ function GM:StrifeInitialize()
 end
 
 function GM:StrifeBroadcast()
-    net.Start("us_strife_update")
+    net.Start("us_strifeupdate")
         net.WriteFloat(GAMEMODE.StrifeAdvantage)
     net.Broadcast()
 end

@@ -13,7 +13,7 @@ function GM:WriteRoundState(ply)
     net.Start("us_stateupdate")
     net.WriteUInt(GAMEMODE:GetRoundState(), 3)
     net.WriteUInt(GAMEMODE:GetRoundCount(), 8)
-    net.WriteString(GAMEMODE:GetActiveGameType()) -- TODO: Better way of networking gametype?
+    net.WriteString(GAMEMODE:GetActiveGameTypeName()) -- TODO: Better way of networking gametype?
     net.WriteFloat(GAMEMODE.RoundLastTimer)
     net.WriteFloat(GAMEMODE.RoundTimerLength)
 
@@ -36,6 +36,8 @@ function GM:WriteScores(ply)
 end
 
 function GM:SetRoundState(state, dur)
+    if istable(dur) then PrintTable(dur) end
+    print("setting state to " .. tostring(state) .. " for " .. tostring(dur or 0) .. "s")
     self.RoundState = state
     self.RoundLastTimer = CurTime()
     self.RoundTimerLength = dur or 0
@@ -43,7 +45,20 @@ function GM:SetRoundState(state, dur)
 end
 
 function GM:RoundSetup()
+    self.RespawnTimers = {}
+    self.Scores = {[TEAM_CT] = 0, [TEAM_TR] = 0}
+
+    game.CleanUpMap()
+
+    for _, ply in pairs(player.GetAll()) do
+        if ply:Team() == TEAM_CT or ply:Team() == TEAM_TR then
+            ply.ForceSpawn = true
+            if ply:Alive() then ply:KillSilent() end
+        end
+    end
+
     self:SetRoundState(ROUND_PREGAME, self:GetGameTypeParam("Rounds.PregameTime"))
+    self:WriteScores()
 end
 
 function GM:RoundStart()
@@ -77,6 +92,52 @@ function GM:RoundFinish(winner)
     end
 end
 
+function GM:RoundWinCheck()
+
+    if self:GetGameTypeParam("WinCond.Score") then
+        local limit = self:CallGameTypeFunction("GetScoreLimit") or self:GetGameTypeParam("WinCond.ScoreLimit")
+        local ct, tr = self.Scores[TEAM_CT], self.Scores[TEAM_TR]
+        if ct > limit and tr > limit then
+            if ct == tr then
+                return 0
+            else
+                return (ct > tr and TEAM_CT) or TEAM_TR
+            end
+        elseif ct > limit then
+            return TEAM_CT
+        elseif tr > limit then
+            return TEAM_TR
+        end
+    end
+
+    if self:GetGameTypeParam("WinCond.Eliminate") then
+        -- TODO: check tickets
+        local ct, tr = false, false
+        for _, ply in pairs(team.GetPlayers(TEAM_CT)) do
+            if ply:Alive() and ply:GetObserverMode() == OBS_MODE_NONE then
+                ct = true
+                break
+            end
+        end
+        for _, ply in pairs(team.GetPlayers(TEAM_TR)) do
+            if ply:Alive() and ply:GetObserverMode() == OBS_MODE_NONE then
+                tr = true
+                break
+            end
+        end
+        if ct and not tr then
+            return TEAM_CT
+        elseif tr and not ct then
+            return TEAM_TR
+        elseif not ct and not tr then
+            return 0
+        end
+    end
+
+    -- TODO: control points
+end
+
+local lastwincheck = 0
 function GM:RoundThink()
 
     local state = self:GetRoundState()
@@ -95,7 +156,7 @@ function GM:RoundThink()
                 self:StartVoting()
                 self:SetRoundState(ROUND_POSTMODE, 30) -- TODO convar for voting duration
             else
-                self:SetRoundState(ROUND_POSTGAME, self:GetGameTypeParam("Rounds.PostgameTime"))
+                self:RoundSetup()
             end
         elseif state == ROUND_POSTMODE then
             self:SetRoundState(ROUND_STRIFE)
@@ -106,5 +167,14 @@ function GM:RoundThink()
 
     if state == ROUND_PLAYING then
         self:CallGameTypeFunction("Think")
+        self:RespawnThink()
+
+        if lastwincheck < CurTime() then
+            lastwincheck = CurTime() + 1
+            local winner = self:RoundWinCheck()
+            if winner ~= nil then
+                self:RoundFinish(winner)
+            end
+        end
     end
 end
