@@ -22,36 +22,26 @@ end
 
 function GM:PlayerSpawnAsSpectator(ply)
     ply:StripWeapons()
-
-    if (ply:Team() == TEAM_UNASSIGNED) then
-        ply:Spectate(OBS_MODE_FIXED)
-        return
-    end
-
-    ply:SetTeam(TEAM_SPECTATOR)
+    --ply:SetTeam(TEAM_SPECTATOR)
     ply:Spectate(OBS_MODE_ROAMING)
 end
 
 function GM:PlayerSpawn(ply, transiton)
-    if ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED then
+    if ply:Team() == TEAM_SPECTATOR then
         self:PlayerSpawnAsSpectator(ply)
         return
     end
 
-    -- Stop observer mode
     ply:UnSpectate()
+    ply:SetupHands()
     player_manager.SetPlayerClass(ply, "player_us")
     player_manager.OnPlayerSpawn(ply, transiton)
     player_manager.RunClass(ply, "Spawn")
-    ply:SetupHands()
 
-    -- If we are in transition, do not touch player's weapons
-    if (not transiton) then
-        -- Call item loadout function
+    if not transiton then
         hook.Call("PlayerLoadout", GAMEMODE, ply)
     end
 
-    -- Set player model
     hook.Call("PlayerSetModel", GAMEMODE, ply)
 end
 

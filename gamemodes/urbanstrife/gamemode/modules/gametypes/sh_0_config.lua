@@ -35,6 +35,7 @@ GM.GameTypeConfiguration = {
         entries = {
             RoundCount = {type = GTCFG_INT, default = 6},
             PregameTime = {type = GTCFG_FLOAT, default = 10},
+            PregameFreeze = {type = GTCFG_BOOL, default = true},
             PostgameTime = {type = GTCFG_FLOAT, default = 10},
             BestOf = {type = GTCFG_BOOL, default = true},
             Halftime = {type = GTCFG_BOOL, default = true},

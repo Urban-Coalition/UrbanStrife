@@ -13,8 +13,10 @@ function GM:GameTypeStart(gametype)
     self:RoundSetup()
 end
 
-function GM:GameTypeFinish()
+function GM:GameTypeFinish(winner)
     self.ActiveGameType = nil
+
+    MsgAll("The winner is " .. (team.GetName(winner) or "nobody") .. "!")
 
     net.Start("us_gametypeupdate")
         net.WriteString("")

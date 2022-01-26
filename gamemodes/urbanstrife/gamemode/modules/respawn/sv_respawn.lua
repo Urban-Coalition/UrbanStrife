@@ -15,7 +15,7 @@ function GM:RespawnThink()
 end
 
 function GM:PostPlayerDeath(ply)
-    ply.LastDeath = CurTime()
+    ply.NextSpawnTime = CurTime() + 5
 
     if mode == SPAWNMODE_TIME then
         GAMEMODE.RespawnTimers[ply] = CurTime() + self:GetGameTypeParam("Spawning.Delay", ply:Team())
@@ -26,18 +26,20 @@ function GM:PostPlayerDeath(ply)
 end
 
 function GM:PlayerDeathThink(ply)
-    if ply.LastDeath + 5 > CurTime() then return end
 
-    if ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED then
+    if ply:Team() == TEAM_SPECTATOR then
         self:PlayerSpawnAsSpectator(ply)
         return
     end
 
-    -- In Strife, respawn after player chooses to (no spectator cam)
-    if ply.ForceSpawn then
+    if ply.NextSpawnTime and ply.NextSpawnTime > CurTime() and not ply.ForceSpawn then return end
+
+    if ply.ForceSpawn or self:GetRoundState() == ROUND_PREGAME then
+        --self:PlayerSpawn(ply)
         ply:Spawn()
         ply.ForceSpawn = nil
     elseif self:GetRoundState() == ROUND_STRIFE then
+        -- In Strife, respawn after player chooses to (no spectator cam)
         if (ply:IsBot() or ply:KeyPressed(IN_ATTACK) or ply:KeyPressed(IN_ATTACK2) or ply:KeyPressed(IN_JUMP)) then ply:Spawn() end
     elseif not ply.ReadyToSpawn then
         self:PlayerSpawnAsSpectator(ply)

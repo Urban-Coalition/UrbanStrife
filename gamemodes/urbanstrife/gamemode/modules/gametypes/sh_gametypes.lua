@@ -69,7 +69,7 @@ function GM:CallGameTypeFunction(func, ...)
     local vars = string.Explode(".", func)
     local f = gt
     for i = 1, #vars do
-        f = f[vars[i]]
+        f = f and f[vars[i]]
         if i ~= #vars and not f then error("couldn't find function " .. tostring(func)) end
     end
 

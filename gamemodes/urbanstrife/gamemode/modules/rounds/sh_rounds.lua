@@ -22,6 +22,11 @@ GM.Scores = {
     [TEAM_TR] = 0,
 }
 
+GM.RoundWins = {
+    [TEAM_CT] = 0,
+    [TEAM_TR] = 0,
+}
+
 function GM:GetRoundState()
     return GAMEMODE.RoundState
 end

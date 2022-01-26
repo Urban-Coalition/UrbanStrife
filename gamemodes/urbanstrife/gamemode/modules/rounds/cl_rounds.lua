@@ -10,4 +10,7 @@ net.Receive("us_scoreupdate", function()
     GAMEMODE.Scores = {}
     GAMEMODE.Scores[TEAM_CT] = net.ReadInt(16)
     GAMEMODE.Scores[TEAM_TR] = net.ReadInt(16)
+    GAMEMODE.RoundWins = {}
+    GAMEMODE.RoundWins[TEAM_CT] = net.ReadUInt(8)
+    GAMEMODE.RoundWins[TEAM_TR] = net.ReadUInt(8)
 end)

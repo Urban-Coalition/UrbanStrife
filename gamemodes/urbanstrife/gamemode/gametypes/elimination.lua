@@ -33,6 +33,9 @@ GAMETYPE.Rounds.RoundCount = 6
 -- Amount of time during the pregame (players are frozen but can modify loadouts)
 GAMETYPE.Rounds.PregameTime = 10
 
+-- Whether to freeze players in pregame.
+GAMETYPE.Rounds.PregameFreeze = true
+
 -- Amount of time to stay in the postgame before a new round begins
 GAMETYPE.Rounds.PostgameTime = 10
 
