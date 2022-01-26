@@ -41,6 +41,7 @@ net.Receive("loadout_update", function(len, ply)
             if entry.attachments then
                 ply.Loadout[slotname][2] = {}
                 for j = 1, #entry.attachments do
+                    if entry.attachments[j] == false then continue end
                     local attid = net.ReadUInt(GAMEMODE:GetAttBits())
                     if attid ~= 0 then
                         if entry.attachments[j].default and entry.attachments[j].fixed then

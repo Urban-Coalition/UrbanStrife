@@ -57,9 +57,10 @@ function GM:SendLoadout()
                 LocalPlayer().Loadout[k] = {slot[1], table.Copy(slot[2])}
                 if entry.attachments then
                     for i = 1, #entry.attachments do
+                        if entry.attachments[i] == false then continue end
                         local id = 0
                         if slot[2] and slot[2][i] ~= nil then
-                            id = GAMEMODE.EntryAttachments[slot[2][i]].ID or id
+                            id = (GAMEMODE.EntryAttachments[slot[2][i]] or {}).ID or id
                         end
                         net.WriteUInt(id, GAMEMODE:GetAttBits())
                     end
