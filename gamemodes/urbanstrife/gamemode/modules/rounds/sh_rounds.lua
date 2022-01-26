@@ -10,7 +10,7 @@ ROUND_STRIFE = 0
 ROUND_PREGAME = 1
 ROUND_PLAYING = 2
 ROUND_POSTGAME = 3
-ROUND_POSTMODE = 4 -- A gametype has ended and we are voting
+ROUND_POSTMATCH = 4 -- A gametype has ended and we are voting
 
 GM.RoundState = ROUND_STRIFE
 GM.RoundCount = 0

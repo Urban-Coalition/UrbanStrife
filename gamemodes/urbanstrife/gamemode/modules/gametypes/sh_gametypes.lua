@@ -5,7 +5,7 @@ function GM:GetActiveGameType()
 end
 
 function GM:GetActiveGameTypeName()
-    return GAMEMODE.ActiveGameType.ShortName
+    return GAMEMODE.ActiveGameType and GAMEMODE.ActiveGameType.ShortName or ""
 end
 
 

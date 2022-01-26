@@ -7,7 +7,7 @@ GAMETYPE = {}
 GAMETYPE.Name = "Elimination"
 
 GAMETYPE.Description = {
-    [0] = "Eliminate the enemy team or capture the neutral objective.\n\nRespawns are disabled.",
+    [0] = "Eliminate the enemy team or capture the neutral objective.\nRespawns are disabled.",
 }
 
 -- Minimum amount of players that need to be present before a game is allowed to begin
@@ -146,7 +146,7 @@ GAMETYPE.EntryFilterFunction = nil -- function(entry, teamid) return true end
 ---------------------------------------
 
 -- Called when the gametype is about to be setup
-GAMETYPE.OnGameTypetart = function() end
+GAMETYPE.OnGameTypeStart = function() end
 
 -- Called after the gametype is over
 GAMETYPE.OnGameTypeFinish = function() end

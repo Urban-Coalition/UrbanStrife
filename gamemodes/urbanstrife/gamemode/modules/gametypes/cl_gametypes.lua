@@ -1,7 +1,3 @@
-hook.Add("HUDPaint", "GameType", function()
-    -- TODO: draw gametype related hud - scores, tickets, time left, state etc
-end)
-
 net.Receive("us_gametypeupdate", function()
     local gametype = net.ReadString()
     if gametype == "" then

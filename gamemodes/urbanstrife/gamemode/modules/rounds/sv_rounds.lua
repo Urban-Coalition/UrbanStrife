@@ -9,6 +9,12 @@ net.Receive("us_scoreupdate", function(len, ply)
     GAMEMODE:WriteScores(ply)
 end)
 
+concommand.Add("urbanstrife_admin_roundrestart", function(ply, cmd, args)
+    if not IsValid(ply) or ply:IsAdmin() then
+        GAMEMODE:RoundSetup()
+    end
+end)
+
 function GM:WriteRoundState(ply)
     net.Start("us_stateupdate")
     net.WriteUInt(GAMEMODE:GetRoundState(), 3)
@@ -86,39 +92,19 @@ end
 
 function GM:RoundFinish(winner)
 
-    MsgAll("the winner is: " .. winner)
+    self.RoundCount = self.RoundCount + 1
 
     if winner ~= 0 then
         self.RoundWins[winner] = self.RoundWins[winner] + 1
     end
 
+    MsgAll("round winner: " .. (team.GetName(winner) or "nobody"))
     PrintTable(self.RoundWins)
 
     self:CallGameTypeFunction("OnRoundFinish", winner)
+    self:SetRoundState(ROUND_POSTGAME, self:GetGameTypeParam("Rounds.PostgameTime"))
 
-    local roundcount = self:GetGameTypeParam("Rounds.RoundCount")
-
-    if self:GetGameTypeParam("Rounds.BestOf") and self.RoundWins[winner] > math.floor(roundcount / 2) then
-        self:GameTypeFinish(winner)
-    elseif self:GetRoundCount() >= roundcount then
-        local ct, tr = self.RoundWins[TEAM_CT], self.RoundWins[TEAM_TR]
-        if ct == tr then
-            if self:GetGameTypeParam("Rounds.Tiebreaker") then
-                MsgAll("Playing tiebreaker round!")
-                self:SetRoundState(ROUND_POSTGAME, self:GetGameTypeParam("Rounds.PostgameTime"))
-            else
-                self:SetRoundState(ROUND_POSTMODE)
-                self:GameTypeFinish(0)
-            end
-        else
-            self:SetRoundState(ROUND_POSTMODE)
-            self:GameTypeFinish(ct > tr and TEAM_CT or TEAM_TR)
-        end
-        -- TODO: tiebreaker round?
-
-    else
-        self:SetRoundState(ROUND_POSTGAME, self:GetGameTypeParam("Rounds.PostgameTime"))
-    end
+    self:WriteScores()
 end
 
 function GM:RoundWinCheck()
@@ -181,13 +167,27 @@ function GM:RoundThink()
                 self:RoundFinish(self:RoundTimeoutWinner())
             end
         elseif state == ROUND_POSTGAME then
-            if self:GetRoundCount() >= self:GetGameTypeParam("Rounds.RoundCount") then
-                self:StartVoting()
-                self:SetRoundState(ROUND_POSTMODE, 30) -- TODO convar for voting duration
+
+            local roundcount = self:GetGameTypeParam("Rounds.RoundCount")
+            local ct, tr = self.RoundWins[TEAM_CT], self.RoundWins[TEAM_TR]
+
+            if self:GetGameTypeParam("Rounds.BestOf") and math.max(ct, tr) > math.floor(roundcount / 2) and ct ~= tr then
+                self:GameTypeFinish(ct > tr and TEAM_CT or TEAM_TR)
+            elseif self:GetRoundCount() >= roundcount then
+                if ct == tr then
+                    if self:GetGameTypeParam("Rounds.Tiebreaker") then
+                        MsgAll("Playing tiebreaker round!")
+                        self:RoundSetup()
+                    else
+                        self:GameTypeFinish(0)
+                    end
+                else
+                    self:GameTypeFinish(ct > tr and TEAM_CT or TEAM_TR)
+                end
             else
                 self:RoundSetup()
             end
-        elseif state == ROUND_POSTMODE then
+        elseif state == ROUND_POSTMATCH then
             self:SetRoundState(ROUND_STRIFE)
             self:FinishVoting()
         end
