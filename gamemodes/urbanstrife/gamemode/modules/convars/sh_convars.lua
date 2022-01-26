@@ -1,7 +1,10 @@
+local ar = FCVAR_ARCHIVE + FCVAR_REPLICATED
+
 GM.OptionConvars = {
-    urbanstrife_damage_limbmultiplier = {"0", FCVAR_ARCHIVE + FCVAR_REPLICATED, "Add limb multipliers."},
+    voting_duration = {"30", ar},
+    damage_limbmultiplier = {"0", ar},
 }
 
 for k, v in pairs(GM.OptionConvars) do
-    GM.OptionConvars[k] = CreateConVar(k, unpack(v))
+    GM.OptionConvars[k] = CreateConVar("urbanstrife_" .. k, unpack(v))
 end

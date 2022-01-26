@@ -1,10 +1,3 @@
--- No respawns
-SPAWNMODE_NONE = 0
--- Individual timer
-SPAWNMODE_TIME = 1
--- Wave-based (each wave respawns all dead players)
-SPAWNMODE_WAVE = 2
-
 GM.GameTypes = {}
 
 function GM:LoadGameTypes(path)

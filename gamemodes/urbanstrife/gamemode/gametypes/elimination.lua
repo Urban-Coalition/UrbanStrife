@@ -10,9 +10,16 @@ GAMETYPE.Description = {
     [0] = "Eliminate the enemy team or capture the neutral objective.\n\nRespawns are disabled.",
 }
 
--- If true, both teams will use the configuration values of index 0
--- Otherwise, they will use the values of TEAM_CT and TEAM_TR (1 and 2)
-GAMETYPE.Symmetric = true
+-- Minimum amount of players that need to be present before a game is allowed to begin
+GAMETYPE.MinPlayers = 2
+
+-- If there are more than this many players, the gametype will not be selectable
+-- Set 0 for no upper limit
+GAMETYPE.MaxPlayers = 0
+
+-- Amount of players each team should have, in TEAM_CT : TEAM_TR.
+-- e.g.: TeamRatio of 2 means 2 CT for each TR.
+GAMETYPE.TeamRatio = 1
 
 ---------------------------------------
 -- Round Structure
@@ -22,6 +29,12 @@ GAMETYPE.Rounds = {}
 
 -- Amount of rounds before the gametype concludes
 GAMETYPE.Rounds.RoundCount = 6
+
+-- Amount of time during the pregame (players are frozen but can modify loadouts)
+GAMETYPE.Rounds.PregameTime = 10
+
+-- Amount of time to stay in the postgame before a new round begins
+GAMETYPE.Rounds.PostgameTime = 10
 
 -- Declare a winner if a team wins a majority of rounds (e.g. 3 wins in a 5-round gametype)
 GAMETYPE.Rounds.BestOf = true
@@ -58,7 +71,7 @@ GAMETYPE.Spawning = {}
 GAMETYPE.Spawning.Mode = {[0] = SPAWNMODE_NONE}
 
 -- For SPAWNMODE_TIME, try to align timers so that multiple players spawn at once
-GAMETYPE.Spawning.AlignTimers = {[0] = false}
+GAMETYPE.Spawning.AlignTimer = {[0] = false}
 -- For SPAWNMODE_TIME, the lowest a respawn timer can go in order to match respawns
 GAMETYPE.Spawning.AlignTimerMin = {[0] = 0}
 
@@ -122,15 +135,17 @@ GAMETYPE.EntryBlacklist = nil --{[0] = {["my_weapon"] = true}}
 -- Return true to allow and false/nil to disallow
 GAMETYPE.EntryFilterFunction = nil -- function(entry, teamid) return true end
 
+-- TODO: Economy
+
 ---------------------------------------
 -- Event functions
 ---------------------------------------
 
 -- Called when the gametype is about to be setup
-GAMETYPE.OnGameStart = function() end
+GAMETYPE.OnGameTypetart = function() end
 
 -- Called after the gametype is over
-GAMETYPE.OnGameEnd = function() end
+GAMETYPE.OnGameTypeFinish = function() end
 
 -- Called when a round is about to enter pregame
 GAMETYPE.OnRoundSetup = function() end
@@ -139,7 +154,11 @@ GAMETYPE.OnRoundSetup = function() end
 GAMETYPE.OnRoundStart = function() end
 
 -- Called after a winner is declared
-GAMETYPE.OnRoundEnd = function(winner) end
+GAMETYPE.OnRoundFinish = function(winner) end
+
+-- Called while thinking
+GAMETYPE.Think = function() end
+
 
 ---------------------------------------
 -- Hooks

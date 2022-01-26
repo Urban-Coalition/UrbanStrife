@@ -35,7 +35,8 @@ function GM:StrifeDecayAdvantage(amt)
 end
 
 function GM.StrifeThink()
-    if GAMEMODE.StrifeAdvantage ~= 0 and GAMEMODE.StrifeLastScore < CurTime() - 10 then
+    if GAMEMODE:GetRoundState() == ROUND_STRIFE and
+            GAMEMODE.StrifeAdvantage ~= 0 and GAMEMODE.StrifeLastScore < CurTime() - 10 then
         GAMEMODE:StrifeDecayAdvantage(3 * (1 + math.abs(GAMEMODE.StrifeAdvantage / 100)))
         GAMEMODE:StrifeBroadcast()
     end
