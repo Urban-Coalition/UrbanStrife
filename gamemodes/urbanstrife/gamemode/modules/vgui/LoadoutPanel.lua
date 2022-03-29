@@ -49,7 +49,7 @@ function PANEL:Init()
             if GAMEMODE.NewLoadoutDirty then
                 GAMEMODE:SendLoadout()
             elseif LocalPlayer():GetSpawnArea() == LocalPlayer():Team() then
-                net.Start("loadout_open")
+                net.Start("us_loadoutopen")
                 net.SendToServer()
             end
             self:Remove()

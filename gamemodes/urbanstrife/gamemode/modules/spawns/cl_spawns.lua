@@ -10,14 +10,14 @@ local function read()
     GAMEMODE.SpawnAreas[i][3] = net.ReadUInt(4)
 end
 
-net.Receive("UpdateSpawnArea", function()
+net.Receive("us_updatespawnareas", function()
     if net.ReadBool() then
         GAMEMODE.SpawnAreas[net.ReadUInt(8)] = nil
     else
         read()
     end
 end)
-net.Receive("UpdateSpawnAreaFull", function()
+net.Receive("us_fullupdatespawnareas", function()
     GAMEMODE.SpawnAreas = {}
     for i = 1, net.ReadUInt(8) do
         read()
@@ -25,6 +25,6 @@ net.Receive("UpdateSpawnAreaFull", function()
 end)
 
 hook.Add("InitPostEntity", "UpdateSpawnArea", function()
-    net.Start("UpdateSpawnAreaFull")
+    net.Start("us_fullupdatespawnareas")
     net.SendToServer()
 end)

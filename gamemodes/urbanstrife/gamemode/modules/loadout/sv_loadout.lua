@@ -1,5 +1,5 @@
-util.AddNetworkString("loadout_open")
-util.AddNetworkString("loadout_update")
+util.AddNetworkString("us_loadoutopen")
+util.AddNetworkString("us_loadoutupdate")
 
 local function deepcopy(obj)
     if type(obj) ~= "table" then return obj end
@@ -8,7 +8,7 @@ local function deepcopy(obj)
     return res
 end
 
-net.Receive("loadout_update", function(len, ply)
+net.Receive("us_loadoutupdate", function(len, ply)
     ply.LastLoadout = deepcopy(ply.Loadout)
 
     local amt = net.ReadUInt(8)
@@ -70,7 +70,7 @@ net.Receive("loadout_update", function(len, ply)
 end)
 
 function GM:ShowSpare2(ply)
-    net.Start("loadout_open")
+    net.Start("us_loadoutopen")
     net.Send(ply)
 end
 
@@ -153,7 +153,7 @@ function GM:GiveLoadoutPlayer(ply, strip)
     end
 end
 
-net.Receive("loadout_open", function(len, ply)
+net.Receive("us_loadoutopen", function(len, ply)
     if ply:GetSpawnArea() == ply:Team() then
         GAMEMODE:GiveLoadoutPlayer(ply, true)
     end

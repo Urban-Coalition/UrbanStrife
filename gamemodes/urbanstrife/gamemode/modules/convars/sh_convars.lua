@@ -4,11 +4,13 @@ GM.OptionConvars = {
 
     dev_botteam = {"0", 0, "", 0, 2},
 
-    voting_duration = {"30", ar},
+    round_ready_fraction = {"0.75", ar, 0, 1},
+    round_vote_duration = {"30", ar},
+
     damage_limbmultiplier = {"0", ar},
 
 }
 
 for k, v in pairs(GM.OptionConvars) do
-    GM.OptionConvars[k] = CreateConVar("urbanstrife_" .. k, unpack(v))
+    GM.OptionConvars[k] = CreateConVar("us_" .. k, unpack(v))
 end

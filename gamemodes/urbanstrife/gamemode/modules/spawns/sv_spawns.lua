@@ -1,5 +1,5 @@
-util.AddNetworkString("UpdateSpawnArea")
-util.AddNetworkString("UpdateSpawnAreaFull")
+util.AddNetworkString("us_updatespawnareas")
+util.AddNetworkString("us_fullupdatespawnareas")
 
 local function writearea(i)
     local a = GAMEMODE.SpawnAreas[i]
@@ -16,7 +16,7 @@ local function writearea(i)
 end
 
 function GM:SendSpawnArea(i)
-    net.Start("UpdateSpawnArea")
+    net.Start("us_updatespawnareas")
         if GAMEMODE.SpawnAreas[i] == nil then
             net.WriteBool(true)
             net.WriteUInt(i, 8)
@@ -28,14 +28,14 @@ function GM:SendSpawnArea(i)
 end
 
 function GM:SendSpawnAreaFull(ply)
-    net.Start("UpdateSpawnAreaFull")
+    net.Start("us_fullupdatespawnareas")
         net.WriteUInt(table.Count(GAMEMODE.SpawnAreas), 8)
         for k, v in pairs(GAMEMODE.SpawnAreas) do
             writearea(k)
         end
     if not ply then net.Broadcast() else net.Send(ply) end
 end
-net.Receive("UpdateSpawnAreaFull", function(len, ply)
+net.Receive("us_fullupdatespawnareas", function(len, ply)
     GAMEMODE:SendSpawnAreaFull(ply)
 end)
 

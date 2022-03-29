@@ -24,7 +24,7 @@ function GM:CreateLoadoutPanel()
 end
 concommand.Add("loadoutpanel", GM.CreateLoadoutPanel)
 
-net.Receive("loadout_open", function()
+net.Receive("us_loadoutopen", function()
     if IsValid(GAMEMODE.LoadoutPanel) then
         GAMEMODE.LoadoutPanel:Remove()
         GAMEMODE.LoadoutPanel = nil
@@ -38,7 +38,7 @@ end)
 
 function GM:SendLoadout()
     LocalPlayer().Loadout = {}
-    net.Start("loadout_update")
+    net.Start("us_loadoutupdate")
 
         net.WriteUInt(table.Count(GAMEMODE.LoadoutSlots), 8)
 
