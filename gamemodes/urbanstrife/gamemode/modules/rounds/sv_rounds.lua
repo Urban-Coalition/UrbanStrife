@@ -2,10 +2,12 @@ util.AddNetworkString("us_stateupdate")
 util.AddNetworkString("us_scoreupdate")
 
 net.Receive("us_stateupdate", function(len, ply)
+    if not GAMEMODE:NetLimiterCheck(ply) then return end
     GAMEMODE:WriteRoundState(ply)
 end)
 
 net.Receive("us_scoreupdate", function(len, ply)
+    if not GAMEMODE:NetLimiterCheck(ply) then return end
     GAMEMODE:WriteScores(ply)
 end)
 
