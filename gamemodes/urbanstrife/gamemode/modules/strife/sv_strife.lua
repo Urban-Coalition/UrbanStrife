@@ -53,3 +53,9 @@ hook.Add("PlayerDeath", "Strife", function(ply, inflictor, attacker)
         GAMEMODE:StrifeBroadcast()
     end
 end)
+
+hook.Add("PlayerRequestData", "Strife", function(ply)
+    net.Start("us_strifeupdate")
+        net.WriteFloat(GAMEMODE.StrifeAdvantage)
+    net.Send(ply)
+end)

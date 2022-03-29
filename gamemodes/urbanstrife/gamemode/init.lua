@@ -4,6 +4,8 @@ AddCSLuaFile("player_class/player_us.lua")
 include("shared.lua")
 include("player_class/player_us.lua")
 
+util.AddNetworkString("us_playerrequestdata")
+
 function GM:PlayerInitialSpawn(ply, transiton)
 
     if ply:IsBot() and GAMEMODE.OptionConvars.dev_botteam:GetInt() > 0 then
@@ -48,3 +50,15 @@ end
 function GM:Think()
     self:RoundThink()
 end
+
+-- Called after client InitPostEntity's and sends a net message to server.
+function GM:PlayerRequestData(ply)
+    hook.Call("PlayerRequestData", self, ply)
+end
+
+net.Receive("us_playerrequestdata", function(len, ply)
+    if not ply.PlayerDataRequested then
+        ply.PlayerDataRequested = true
+        GAMEMODE:PlayerRequestData(ply)
+    end
+end)
