@@ -52,13 +52,9 @@ function GM:Think()
 end
 
 -- Called after client InitPostEntity's and sends a net message to server.
-function GM:PlayerRequestData(ply)
-    hook.Call("PlayerRequestData", self, ply)
-end
-
 net.Receive("us_playerrequestdata", function(len, ply)
     if not ply.PlayerDataRequested then
         ply.PlayerDataRequested = true
-        GAMEMODE:PlayerRequestData(ply)
+        hook.Run("PlayerRequestData", ply)
     end
 end)

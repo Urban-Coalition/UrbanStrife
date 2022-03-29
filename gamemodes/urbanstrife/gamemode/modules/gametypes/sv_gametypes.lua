@@ -6,13 +6,13 @@ local function gametypes(cmd, args)
     return tbl
 end
 
-concommand.Add("urbanstrife_admin_gametypestart", function(ply, cmd, args)
+concommand.Add("us_admin_gametypestart", function(ply, cmd, args)
     if not IsValid(ply) or ply:IsAdmin() then
         GAMEMODE:GameTypeStart(args[1])
     end
 end, gametypes)
 
-concommand.Add("urbanstrife_admin_gametypefinish", function(ply, cmd, args)
+concommand.Add("us_admin_gametypefinish", function(ply, cmd, args)
     if not IsValid(ply) or ply:IsAdmin() then
         GAMEMODE:GameTypeFinish(args[1])
     end

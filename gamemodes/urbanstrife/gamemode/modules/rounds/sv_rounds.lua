@@ -11,7 +11,7 @@ net.Receive("us_scoreupdate", function(len, ply)
     GAMEMODE:WriteScores(ply)
 end)
 
-concommand.Add("urbanstrife_admin_roundrestart", function(ply, cmd, args)
+concommand.Add("us_admin_roundrestart", function(ply, cmd, args)
     if not IsValid(ply) or ply:IsAdmin() then
         GAMEMODE:RoundSetup()
     end
