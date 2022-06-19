@@ -9,7 +9,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_glock",
         icon = Material("arccw/weaponicons/arccw_ud_glock"),
 
-        cost_point = 2,
+        cost_point = 3,
         cost_cash = 400,
 
         atttype = ATTTYPE_ARCCW,
@@ -50,7 +50,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_m16",
         icon = Material("arccw/weaponicons/arccw_ud_m16"),
 
-        cost_point = 3,
+        cost_point = 5,
         cost_cash = 2800,
 
         atttype = ATTTYPE_ARCCW,
@@ -202,7 +202,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_m79",
         icon = Material("arccw/weaponicons/arccw_ud_m79"),
 
-        cost_point = 4,
+        cost_point = 5,
         cost_cash = 7000,
         unique = true,
         nodefaultclip = true,
@@ -236,7 +236,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_uzi",
         icon = Material("arccw/weaponicons/arccw_ud_uzi"),
 
-        cost_point = 2,
+        cost_point = 3,
         cost_cash = 2600,
         unique = true,
 

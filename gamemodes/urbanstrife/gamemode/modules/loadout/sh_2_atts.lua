@@ -50,6 +50,10 @@ GM.CommonAttSlots = {
         name = "Internals",
         slot = "uc_fg",
     },
+    ["uc_stock"] = {
+        name = "Stock",
+        slot = "uc_stock",
+    },
 }
 
 GM.EntryAttachments = GM.EntryAttachments or {}
