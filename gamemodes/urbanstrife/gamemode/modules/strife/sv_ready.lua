@@ -35,6 +35,10 @@ net.Receive("us_strifeready", function(len, ply)
             GAMEMODE:AddPlayerToReadyTable(ply)
         end
     end
+
+    if GAMEMODE:IsEnoughPlayersReady() then
+        GM:StartVoting()
+    end
 end)
 
 -- If a player disconnects, remove them from the ready table

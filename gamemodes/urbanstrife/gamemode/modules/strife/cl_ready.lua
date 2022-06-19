@@ -53,4 +53,6 @@ hook.Add("HUDPaint", "Ready", function()
     end
 
     draw.SimpleTextOutlined( #GAMEMODE.ReadyPlayers .. "/" .. GAMEMODE:ReadyPlayerCount() .. " players ready", "StrifeSS_10", ScrW() * 0.5, 96, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, GCLR("shadow"))
+    local readybind = input.LookupBinding("gm_showspare1") or "gm_showspare1"
+    draw.SimpleTextOutlined( string.upper(readybind) .. " - Toggle Ready", "StrifeSS_10", ScrW() * 0.5, 96 + ScreenScale(10), color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 2, GCLR("shadow"))
 end)

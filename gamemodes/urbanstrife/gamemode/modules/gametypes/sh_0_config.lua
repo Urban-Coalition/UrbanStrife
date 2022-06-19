@@ -7,6 +7,11 @@ GTCFG_ENUM = 5
 GTCFG_LOADOUT = 6
 GTCFG_ENTRYLIST = 7
 
+GTCFG_LIST_TEAM = 8 -- A list containing a team for each index (or 0 for no team)
+GTCFG_LIST_INT = 9
+GTCFG_LIST_FLOAT = 10
+GTCFG_LIST_BOOL = 11
+
 -- No respawns
 SPAWNMODE_NONE = 0
 -- Individual timer
@@ -15,6 +20,15 @@ SPAWNMODE_TIME = 1
 SPAWNMODE_WAVE = 2
 -- Default (click anywhere to respawn)
 SPAWNMODE_DEFAULT = 3
+
+-- CP do not trigger win conditions. Both teams can capture.
+CPMODE_NONE = 0
+-- The team that captures all points wins. Both teams can capture.
+CPMODE_ALL = 1
+-- TEAM_TR wins if they capture all CPs. TEAM_CT cannot capture points from TEAM_TR.
+CPMODE_TR = 2
+-- TEAM_CT wins if they capture all CPs. TEAM_TR cannot capture points from TEAM_CT.
+CPMODE_CT = 3
 
 --[[
     Information about all possible configurations of a gametype, hooks not included.
@@ -49,9 +63,10 @@ GM.GameTypeConfiguration = {
     Spawning = {
         category = true,
         entries = {
-            Mode = {type = GTCFG_ENUM, teamed = true, enum = {[SPAWNMODE_NONE] = "#urbanstrife.enum.spawnmode.none",
-            [SPAWNMODE_TIME] = "#urbanstrife.enum.spawnmode.time",
-            [SPAWNMODE_WAVE] = "#urbanstrife.enum.spawnmode.wave",}},
+            Mode = {type = GTCFG_ENUM, teamed = true, enum = {
+                [SPAWNMODE_NONE] = "#urbanstrife.enum.spawnmode.none",
+                [SPAWNMODE_TIME] = "#urbanstrife.enum.spawnmode.time",
+                [SPAWNMODE_WAVE] = "#urbanstrife.enum.spawnmode.wave",}},
             AlignTimer = {type = GTCFG_BOOL, teamed = true},
             AlignTimerMin = {type = GTCFG_INT, teamed = true},
             Delay = {type = GTCFG_INT, teamed = true},
@@ -66,10 +81,23 @@ GM.GameTypeConfiguration = {
         category = true,
         entries = {
             Score = {type = GTCFG_BOOL},
-            ScoreLimit = {type = GTCFG_INT},
+            ScoreLimit = {type = GTCFG_INT, teamed = true},
             GetScoreLimit = {type = GTCFG_FUNC},
             Eliminate = {type = GTCFG_BOOL},
             InstantEliminate = {type = GTCFG_BOOL},
+            ControlPoint = {type = GTCFG_BOOL},
+            ControlPointMode = {type = GTCFG_ENUM, enum = {
+                [CPMODE_NONE] = "#urbanstrife.enum.cpmode.none",
+                [CPMODE_ALL] = "#urbanstrife.enum.cpmode.all",
+                [CPMODE_CT] = "#urbanstrife.enum.cpmode.ct",
+                [CPMODE_TR] = "#urbanstrife.enum.cpmode.tr",
+            }},
+            ControlPointProgressive = {type = GTCFG_BOOL},
+            ControlPointTimeOnCapture = {type = GTCFG_INT, teamed = true},
+            ControlPointTicketOnCapture = {type = GTCFG_INT, teamed = true},
+            ControlPointInitialOwner = {type = GTCFG_LIST_TEAM},
+            ControlPointCaptureRate = {type = GTCFG_LIST_FLOAT},
+            ControlPointScoreRate = {type = GTCFG_LIST_FLOAT},
         }
     },
 

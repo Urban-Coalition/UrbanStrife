@@ -73,15 +73,13 @@ GAMETYPE.Spawning = {}
 -- SPAWNMODE_NONE, SPAWNMODE_TIME, SPAWNMODE_WAVE
 GAMETYPE.Spawning.Mode = {[0] = SPAWNMODE_NONE}
 
--- For SPAWNMODE_TIME, try to align timers so that multiple players spawn at once
-GAMETYPE.Spawning.AlignTimer = {[0] = false}
--- For SPAWNMODE_TIME, the lowest a respawn timer can go in order to match respawns
-GAMETYPE.Spawning.AlignTimerMin = {[0] = 0}
+-- For SPAWNMODE_TIME, the amount of spawn time that can be reduced can go in order to match respawns
+GAMETYPE.Spawning.AlignTimer = {[0] = 0}
 
 -- The delay before a player/team respawns
 GAMETYPE.Spawning.Delay = {[0] = 10}
 
--- The amount of respawns / waves each team has. 0 means infinite
+-- The amount of respawns (SPAWNMODE_TIME) / spawn waves (SPAWNMODE_WAVE) each team has. 0 means infinite
 GAMETYPE.Spawning.Ticket = {[0] = 0}
 
 -- Use neutral spawns for both teams instead of team-specific spawns
@@ -101,10 +99,10 @@ GAMETYPE.WinCond = {}
 GAMETYPE.WinCond.Score = false
 
 -- A static score needed to win
-GAMETYPE.WinCond.ScoreLimit = 30
+GAMETYPE.WinCond.ScoreLimit = {[0] = 30}
 
 -- Return the score count needed to win; Overrides ScoreLimit
-GAMETYPE.WinCond.GetScoreLimit = nil --function() return 30 end
+GAMETYPE.WinCond.GetScoreLimit = nil --function(team) return 30 end
 
 -- If a team's ticket reaches zero and all of their players die, the other team wins
 GAMETYPE.WinCond.Eliminate = true
@@ -112,7 +110,43 @@ GAMETYPE.WinCond.Eliminate = true
 -- Immediately declare defeat if a team's ticket reaches zero, regardless of alive status
 GAMETYPE.WinCond.InstantEliminate = false
 
--- TODO: Control points
+-- Enable control points for this mode.
+GAMETYPE.WinCond.ControlPoint = true
+
+-- Determines how control points trigger win condition.
+-- CPMODE_NONE, CPMODE_ALL, CPMODE_TR, CPMODE_CT
+GAMETYPE.WinCond.ControlPointMode = CPMODE_ALL
+
+-- A control point cannot be captured unless the other team owns the adjacent point.
+-- This also means that at any time, only one point is up for contesting.
+GAMETYPE.WinCond.ControlPointProgressive = false
+
+-- The amount of time to add to the clock when a point is captured.
+GAMETYPE.WinCond.ControlPointTimeOnCapture = {[0] = 0}
+
+-- The amount of tickets to add to the team when a point is captured.
+GAMETYPE.WinCond.ControlPointTicketOnCapture = {[0] = 0}
+
+-- The starting owner of each point. Defaults to no owner.
+GAMETYPE.WinCond.ControlPointInitialOwner = {
+    --[[
+    [1] = 0,
+    [2] = 0,
+    [3] = 0,
+    ]]
+}
+
+-- The capture rate of each point.
+GAMETYPE.WinCond.ControlPointCaptureRate = {
+}
+
+-- The rate at which control points generate score per second. Score must be a win condition.
+GAMETYPE.WinCond.ControlPointScoreRate = {
+}
+
+-- The rate at which control points drains tickets per second for the enemy team. Ticket count must be finite.
+GAMETYPE.WinCond.ControlPointTicketDrainRate = {
+}
 
 ---------------------------------------
 -- Loadout & Equipment
