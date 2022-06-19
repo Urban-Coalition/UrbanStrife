@@ -25,7 +25,7 @@ function GM:OppositeTeam(t)
 end
 
 function GM:Initialize()
-    if self.INITIALIZE_COMPLETE then return end
+    if US_INITIALIZE_COMPLETE then return end
 
     if SERVER then self:StrifeInitialize() end
 
@@ -37,7 +37,7 @@ function GM:Initialize()
 
     self:InitializeAtts()
 
-    self.INITIALIZE_COMPLETE = true
+    US_INITIALIZE_COMPLETE = true
 end
 
 function GM:CreateTeams()

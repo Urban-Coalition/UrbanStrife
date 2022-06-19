@@ -50,7 +50,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_m16",
         icon = Material("arccw/weaponicons/arccw_ud_m16"),
 
-        cost_point = 5,
+        cost_point = 4,
         cost_cash = 2800,
 
         atttype = ATTTYPE_ARCCW,
@@ -272,7 +272,7 @@ ECOSYSTEM.LoadoutEntries = {
         icon = Material("urbanstrife/icons/arccw_ud_m4a1.png", "mips smooth"),
         hiddenwhenfree = true,
 
-        cost_point = 5,
+        cost_point = 6,
         cost_cash = 2800,
 
         atttype = ATTTYPE_ARCCW,

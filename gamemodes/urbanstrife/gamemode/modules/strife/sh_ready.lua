@@ -1,12 +1,16 @@
 GM.ReadyPlayers = {}
 GM.ReadyPlayersDict = {}
 
+function GM:ReadyPlayerCount()
+    return math.ceil(#player.GetHumans() * GetConVar("us_round_ready_fraction"):GetFloat())
+end
+
 function GM:IsEnoughPlayersReady()
-    return #GAMEMODE.ReadyPlayers > math.ceil(player.GetCount() * GAMEMODE.OptionConvars.round_ready_fraction:GetFloat())
+    return #GAMEMODE.ReadyPlayers > GAMEMODE:ReadyPlayerCount()
 end
 
 function GM:IsPlayerReady(ply)
-    return GAMEMODE.ReadyPlayersDict[ply] ~= nil
+    return ply:IsBot() or GAMEMODE.ReadyPlayersDict[ply] ~= nil
 end
 
 function GM:AddPlayerToReadyTable(ply)

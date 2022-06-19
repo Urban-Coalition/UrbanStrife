@@ -9,7 +9,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_uc_usp",
         icon = Material("arccw/weaponicons/arccw_uc_usp"),
 
-        cost_point = 2,
+        cost_point = 3,
         cost_cash = 400,
 
         atttype = ATTTYPE_ARCCW,
@@ -68,6 +68,12 @@ ECOSYSTEM.PartialAttachments = {
     ["uc_usp_mag_ext"] = {
         cost_point = 1,
         cost_cash = 200,
+    },
+    ["uc_usp_skin_nickel"] = {
+        cost_point = 0,
+    },
+    ["uc_usp_skin_blued"] = {
+        cost_point = 0,
     },
 }
 

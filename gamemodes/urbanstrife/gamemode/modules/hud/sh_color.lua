@@ -5,6 +5,10 @@ GM.Colors = {
     hover = Color(50, 50, 50, 240),
     empty_hover = Color(100, 100, 100, 200),
 
+    ready = Color(50, 200, 50),
+    not_ready = Color(200, 50, 50),
+    ready_bot = Color(200, 200, 200),
+
     t = {
         [TEAM_CT] = Color(66, 104, 255),
         [TEAM_TR] = Color(255, 135, 43),

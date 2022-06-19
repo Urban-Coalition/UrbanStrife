@@ -33,9 +33,9 @@ LDENTRY_WEPCAT_UTILITY = 7
         string ammotype,
         int ammocount,
 ]]
-GM.LoadoutEntries = {}
-GM.LoadoutIDToEntry = {}
-GM.LoadoutEntryNum = 0
+GM.LoadoutEntries = GM.LoadoutEntries or {}
+GM.LoadoutIDToEntry = GM.LoadoutIDToEntry or {}
+GM.LoadoutEntryNum = GM.LoadoutEntryNum or 0
 
 function GM:AddLoadoutEntry(shortname, entry)
     self.LoadoutEntryNum = self.LoadoutEntryNum + 1
