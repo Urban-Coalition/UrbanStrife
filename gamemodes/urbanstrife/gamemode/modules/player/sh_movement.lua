@@ -103,11 +103,12 @@ function GM:OnPlayerHitGround(ply, inwater, hitfloater, speed)
 end
 
 function GM:GetFallDamage(ply, speed)
-    return speed / 10
+    return speed / 5
 end
 
 hook.Add("PlayerFootstep", "CustomFootstep", function(ply, pos, foot, s, volume, rf)
-    if SERVER then
+    if CLIENT then
+        if ply ~= LocalPlayer() then volume = (ply:Team() == LocalPlayer():Team()) and 0.5 or 1 end
         if not ply:IsOnGround() then
             -- something about jumping
         elseif ply:GetVelocity():Length() > ply:GetWalkSpeed() then

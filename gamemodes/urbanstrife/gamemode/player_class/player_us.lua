@@ -16,8 +16,8 @@ PLAYER.StartHealth = 100
 PLAYER.StartArmor = 0
 
 PLAYER.DropWeaponOnDie = false
-PLAYER.TeammateNoCollide = true
-PLAYER.AvoidPlayers = true
+PLAYER.TeammateNoCollide = false
+PLAYER.AvoidPlayers = false
 PLAYER.UseVMHands = true
 
 function PLAYER:SetupDataTables()

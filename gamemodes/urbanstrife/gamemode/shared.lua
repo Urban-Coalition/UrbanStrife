@@ -85,8 +85,8 @@ end
 
 -- vgui
 for _, f in SortedPairs(file.Find(path .. "/vgui/*.lua", "LUA"), false) do
-    AddCSLuaFile(path .. "/vgui/" .. f)
+    AddCSLuaFile(path .. "vgui/" .. f)
     if CLIENT then
-        include(path .. "/vgui/" .. f)
+        include(path .. "vgui/" .. f)
     end
 end

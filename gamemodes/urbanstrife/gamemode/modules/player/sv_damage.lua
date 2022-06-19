@@ -1,6 +1,28 @@
 hook.Add("EntityTakeDamage", "TeamDamage", function(ply, dmg)
     if not ply:IsPlayer() or not dmg:GetAttacker():IsPlayer() then return end
-    if ply ~= dmg:GetAttacker() and ply:Team() == dmg:GetAttacker():Team() then return true end
+    if ply ~= dmg:GetAttacker() and ply:Team() == dmg:GetAttacker():Team() then
+        local mult = GetConVar("us_ff"):GetFloat()
+        if mult > 0 then
+            if GetConVar("us_ff_punish"):GetBool() then
+                local thres = GetConVar("us_ff_punish_dmgthres"):GetInt()
+                ply.FFDealt = (ply.FFDealt or 0)
+                if ply.FFDealt < thres and ply.FFDealt + dmg:GetDamage() >= thres then
+                    ply:PrintMessage("You have dealt too much friendly damage. Further damage will be reflected onto you.")
+                end
+                ply.FFDealt = ply.FFDealt + dmg:GetDamage()
+                if ply.FFDealt > thres then
+                    -- Can't create a new DamageInfo here.
+                    ply:SetHealth(ply:Health() - dmg:GetDamage())
+                    if ply:Health() <= 0 then
+                        ply:Kill()
+                    end
+                end
+            end
+            dmg:ScaleDamage(math.Clamp(mult, 0, 1))
+        else
+            return true
+        end
+    end
     if ply:GetSpawnArea() == ply:Team() then return true end
 end)
 
@@ -31,10 +53,6 @@ GM.ArmorBlastDamageMults = {0.9, 0.8}
 
 
 function GM:ScalePlayerDamage(ply, hitgroup, dmginfo)
-
-    if ply ~= dmginfo:GetAttacker() and (dmginfo:GetAttacker():IsPlayer() and ply:Team() == dmginfo:GetAttacker():Team()) then return true end
-    if ply:GetSpawnArea() == ply:Team() then return true end
-
     if GAMEMODE.OptionConvars.damage_limbmultiplier:GetBool() then
         if hitgroup == HITGROUP_HEAD then
             dmginfo:ScaleDamage(dmginfo:IsDamageType(DMG_BUCKSHOT) and 1.5 or 3)

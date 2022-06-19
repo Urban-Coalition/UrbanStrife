@@ -4,8 +4,8 @@ function GM:LoadGameTypes(path)
     path = path or (GAMEMODE.FolderName .. "/gamemode/gametypes/")
     for _, f in SortedPairs(file.Find(path .. "/*.lua", "LUA") or {}, false) do
         local succ, err = pcall(function()
-            AddCSLuaFile(path .. "/" .. f)
-            include(path .. "/" .. f)
+            AddCSLuaFile(path .. f)
+            include(path .. f)
         end)
         if not succ or not GAMETYPE then
             print("Failed to load gametype '" .. f .. "': " .. tostring(err))

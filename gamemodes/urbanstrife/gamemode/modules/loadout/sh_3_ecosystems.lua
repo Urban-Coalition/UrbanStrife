@@ -2,8 +2,8 @@ function GM:LoadEcosystems(path)
     path = path or (GAMEMODE.FolderName .. "/gamemode/ecosystems/")
     for _, f in SortedPairs(file.Find(path .. "*.lua", "LUA") or {}, false) do
         local succ, err = pcall(function()
-            AddCSLuaFile(path .. "/" .. f)
-            include(path .. "/" .. f)
+            AddCSLuaFile(path .. f)
+            include(path .. f)
         end)
         if not succ or not ECOSYSTEM then
             print("Failed to load ecosystem '" .. f .. "': " .. tostring(err))

@@ -9,6 +9,9 @@ GM.OptionConvars = {
 
     damage_limbmultiplier = {"0", ar},
 
+    ff = {"0", ar},
+    ff_punish = {"0", ar},
+    ff_punish_dmgthres = {"300", ar},
 }
 
 for k, v in pairs(GM.OptionConvars) do
