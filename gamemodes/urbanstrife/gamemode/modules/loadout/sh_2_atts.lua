@@ -8,6 +8,10 @@ GM.CommonAttSlots = {
         name = "Optic",
         slot = {"optic"},
     },
+    ["acw_optic_lp"] = {
+        name = "Optic",
+        slot = {"optic_lp"},
+    },
     ["acw_muzzle"] = {
         name = "Muzzle",
         slot = {"muzzle"},
@@ -50,9 +54,25 @@ GM.CommonAttSlots = {
         name = "Internals",
         slot = "uc_fg",
     },
+    ["uc_fg_shotgun"] = {
+        name = "Internals",
+        slot = "uc_fg_shotgun",
+    },
     ["uc_stock"] = {
         name = "Stock",
         slot = "uc_stock",
+    },
+    ["uc_muzzle_pistol"] = {
+        name = "Muzzle",
+        slot = {"muzzle", "uc_muzzle_pistol"},
+    },
+    ["uc_muzzle_rifle"] = {
+        name = "Muzzle",
+        slot = {"muzzle", "uc_muzzle_rifle"},
+    },
+    ["uc_muzzle_shotgun"] = {
+        name = "Muzzle",
+        slot = {"muzzle", "uc_muzzle_shotgun", "choke"},
     },
 }
 
@@ -123,7 +143,7 @@ function GM:GetAttsForEntry(slot)
     for id, att in pairs(self.EntryAttachments) do
         local has = false
         for _, s in pairs(slot or {}) do
-            if table.HasValue(att.slot, s) then has = true break end
+            if (isstring(att.slot) and att.slot == s) or (istable(att.slot) and table.HasValue(att.slot, s)) then has = true break end
         end
         if has then table.insert(ret, id) end
     end

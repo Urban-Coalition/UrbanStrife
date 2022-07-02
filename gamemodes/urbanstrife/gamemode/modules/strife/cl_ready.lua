@@ -6,9 +6,9 @@ net.Receive("us_strifeready", function()
     end
 end)
 
-if IsValid(GAMEMODE.ReadyPanel) then GAMEMODE.ReadyPanel:Remove() end
-GAMEMODE.ReadyPanel = nil
-GAMEMODE.ReadyPanelAlpha = 0
+if GAMEMODE and IsValid(GAMEMODE.ReadyPanel) then GAMEMODE.ReadyPanel:Remove() end
+GM.ReadyPanel = nil
+GM.ReadyPanelAlpha = 0
 
 hook.Add("HUDPaint", "Ready", function()
     if not GetConVar("cl_drawhud"):GetBool() or player.GetCount() <= 1 then return end

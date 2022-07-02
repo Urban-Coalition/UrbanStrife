@@ -68,7 +68,7 @@ end
 
 function GM:EntryAttsFree(entry)
     if isstring(entry) then entry = GAMEMODE.LoadoutEntries[entry] end
-    if not entry or not entry.atttype or not entry.attachments then return false end
+    if not entry then return true end
     if entry.atttype == ATTTYPE_ARCCW then
         return GetConVar("arccw_attinv_free"):GetBool() and GetConVar("arccw_enable_customization"):GetInt() > 0
     elseif entry.atttype == ATTTYPE_TACRP then

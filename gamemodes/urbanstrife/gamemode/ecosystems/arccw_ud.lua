@@ -9,7 +9,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_glock",
         icon = Material("arccw/weaponicons/arccw_ud_glock"),
 
-        cost_point = 2,
+        cost_point = 3,
         cost_cash = 400,
 
         atttype = ATTTYPE_ARCCW,
@@ -29,7 +29,7 @@ ECOSYSTEM.LoadoutEntries = {
             },
             GAMEMODE.CommonAttSlots.acw_muzzle,
             GAMEMODE.CommonAttSlots.acw_fg_tac_pistol,
-            false,
+            GAMEMODE.CommonAttSlots.uc_stock,
             {
                 name = "Magazine",
                 slot = "ud_glock_mag",
@@ -49,41 +49,12 @@ ECOSYSTEM.LoadoutEntries = {
         wepcat = LDENTRY_WEPCAT_RIFLE,
         class = "arccw_ud_m16",
         icon = Material("arccw/weaponicons/arccw_ud_m16"),
+        hiddenunlessfree = true,
 
-        cost_point = 4,
+        cost_point = 5,
         cost_cash = 2800,
 
         atttype = ATTTYPE_ARCCW,
-        attachments = {
-            {
-                name = "Optic",
-                slot = {"optic", "ud_m16_rs"},
-            },
-            {
-                name = "Barrel",
-                slot = "ud_m16_barrel",
-            },
-            GAMEMODE.CommonAttSlots.acw_muzzle,
-            false,
-            GAMEMODE.CommonAttSlots.acw_ub,
-            GAMEMODE.CommonAttSlots.acw_tac,
-            {
-                name = "Grip",
-                slot = "ud_m16_grip",
-            },
-            {
-                name = "Stock",
-                slot = "ud_m16_stock",
-            },
-            {
-                name = "Magazine",
-                slot = "ud_m16_mag",
-            },
-            GAMEMODE.CommonAttSlots.uc_ammo,
-            GAMEMODE.CommonAttSlots.uc_powder,
-            GAMEMODE.CommonAttSlots.uc_tp,
-            GAMEMODE.CommonAttSlots.uc_fg,
-        },
     },
     ["arccw_ud_mini14"] = {
         type = LDENTRY_TYPE_SWEP,
@@ -91,7 +62,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_mini14",
         icon = Material("arccw/weaponicons/arccw_ud_mini14"),
 
-        cost_point = 2,
+        cost_point = 1,
         cost_cash = 1900,
 
         atttype = ATTTYPE_ARCCW,
@@ -158,7 +129,7 @@ ECOSYSTEM.LoadoutEntries = {
                 slot = "ud_ammo_shotgun",
             },
             GAMEMODE.CommonAttSlots.uc_tp,
-            GAMEMODE.CommonAttSlots.uc_fg,
+            GAMEMODE.CommonAttSlots.uc_fg_shotgun,
         },
     },
     ["arccw_ud_m1014"] = {
@@ -193,7 +164,7 @@ ECOSYSTEM.LoadoutEntries = {
                 slot = "ud_ammo_shotgun",
             },
             GAMEMODE.CommonAttSlots.uc_tp,
-            GAMEMODE.CommonAttSlots.uc_fg,
+            GAMEMODE.CommonAttSlots.uc_fg_shotgun,
         },
     },
     ["arccw_ud_m79"] = {
@@ -227,7 +198,7 @@ ECOSYSTEM.LoadoutEntries = {
                 slot = "uc_40mm",
             },
             GAMEMODE.CommonAttSlots.uc_tp,
-            GAMEMODE.CommonAttSlots.uc_fg,
+            false,
         },
     },
     ["arccw_ud_uzi"] = {
@@ -236,7 +207,7 @@ ECOSYSTEM.LoadoutEntries = {
         class = "arccw_ud_uzi",
         icon = Material("arccw/weaponicons/arccw_ud_uzi"),
 
-        cost_point = 3,
+        cost_point = 2,
         cost_cash = 2600,
         unique = true,
 
@@ -272,7 +243,7 @@ ECOSYSTEM.LoadoutEntries = {
         icon = Material("urbanstrife/icons/arccw_ud_m4a1.png", "mips smooth"),
         hiddenwhenfree = true,
 
-        cost_point = 6,
+        cost_point = 5,
         cost_cash = 2800,
 
         atttype = ATTTYPE_ARCCW,
@@ -285,14 +256,24 @@ ECOSYSTEM.LoadoutEntries = {
             },
             {
                 name = "Barrel",
-                slot = "ud_m16_barrel",
-                default = "ud_m16_barrel_m4",
+                slot = "ud_m16_blen",
+                default = "ud_m16_barrel_14in",
                 removename = "20\" Standard Barrel",
+            },
+            {
+                name = "Handguard",
+                slot = "ud_m16_hg",
+                default = "ud_m16_hg_tactical",
+                removename = "Ribbed Handguard",
             },
             GAMEMODE.CommonAttSlots.acw_muzzle,
             {
-                name = "Receiver",
+                name = "Upper Receiver",
                 slot = "ud_m16_receiver",
+            },
+            {
+                name = "Receiver",
+                slot = "ud_m16_fcg",
                 default = "ud_m16_receiver_auto",
                 removename = "Burst Receiver",
             },
@@ -333,6 +314,7 @@ ECOSYSTEM.LoadoutEntries = {
             {
                 name = "Optic",
                 slot = {"optic", "ud_m16_rs"},
+                default = "ud_m16_rs_ch",
             },
             {
                 name = "Barrel",
@@ -340,8 +322,13 @@ ECOSYSTEM.LoadoutEntries = {
             },
             GAMEMODE.CommonAttSlots.acw_muzzle,
             {
-                name = "Receiver",
+                name = "Upper Receiver",
                 slot = "ud_m16_receiver",
+                fixed = true
+            },
+            {
+                name = "Lower Receiver",
+                slot = "ud_m16_fcg",
                 default = "ud_m16_receiver_semi",
                 fixed = true
             },
@@ -378,17 +365,24 @@ ECOSYSTEM.LoadoutEntries = {
         atttype = ATTTYPE_ARCCW,
         attachments = {
             false,
+            false,
             {
-                name = "Barrel",
-                slot = "ud_m16_barrel",
-                default = "ud_m16_barrel_classic",
+                name = "Handguard",
+                slot = "ud_m16_hg",
+                default = "ud_m16_hg_a1",
                 fixed = true,
             },
             GAMEMODE.CommonAttSlots.acw_muzzle,
             {
-                name = "Receiver",
+                name = "Upper Receiver",
                 slot = "ud_m16_receiver_a1",
                 default = "ud_m16_receiver_a1",
+                fixed = true,
+            },
+            {
+                name = "Lower Receiver",
+                slot = "ud_m16_fcg_auto",
+                default = "ud_m16_receiver_auto",
                 fixed = true,
             },
             GAMEMODE.CommonAttSlots.acw_ub,
@@ -406,6 +400,52 @@ ECOSYSTEM.LoadoutEntries = {
                 slot = "ud_m16_mag_a1",
                 default = "ud_m16_mag_20",
                 fixed = true,
+            },
+            GAMEMODE.CommonAttSlots.uc_ammo,
+            GAMEMODE.CommonAttSlots.uc_powder,
+            GAMEMODE.CommonAttSlots.uc_tp,
+            GAMEMODE.CommonAttSlots.uc_fg,
+        },
+    },
+    ["arccw_ud_m16a4"] = {
+        name = "M16A4",
+        type = LDENTRY_TYPE_SWEP,
+        wepcat = LDENTRY_WEPCAT_RIFLE,
+        class = "arccw_ud_m16",
+        icon = Material("arccw/weaponicons/arccw_ud_m16"),
+        hiddeniffree = true,
+
+        cost_point = 2,
+        cost_cash = 2800,
+
+        atttype = ATTTYPE_ARCCW,
+        attachments = {
+            {
+                name = "Optic",
+                slot = {"optic", "ud_m16_rs"},
+                default = "ud_m16_rs_ch",
+            },
+            false, -- ud_m16_blen
+            false, -- ud_m16_hg
+            GAMEMODE.CommonAttSlots.acw_muzzle,
+            false, -- ud_m16_receiver
+            {
+                name = "Lower Receiver", -- ud_m16_fcg
+                slot = "ud_m16_fcg_a2",
+            },
+            GAMEMODE.CommonAttSlots.acw_ub,
+            GAMEMODE.CommonAttSlots.acw_tac,
+            {
+                name = "Grip",
+                slot = "ud_m16_grip",
+            },
+            {
+                name = "Stock",
+                slot = "ud_m16_stock",
+            },
+            {
+                name = "Magazine",
+                slot = "ud_m16_mag",
             },
             GAMEMODE.CommonAttSlots.uc_ammo,
             GAMEMODE.CommonAttSlots.uc_powder,
@@ -525,17 +565,24 @@ ECOSYSTEM.PartialAttachments = {
     ["ud_m16_receiver_auto"] = {
         cost_point = 2,
         cost_cash = 1200,
+        slot = {"ud_m16_fcg", "ud_m16_fcg_auto"},
     },
     ["ud_m16_receiver_a1"] = {
-        cost_point = 2,
+        cost_point = 1,
         cost_cash = 1200,
         slot = {"ud_m16_receiver", "ud_m16_receiver_a1"},
     },
     ["ud_m16_receiver_semi"] = {
         cost_point = 0,
+        slot = {"ud_m16_fcg", "ud_m16_fcg_a2"},
     },
     ["ud_m16_receiver_cali"] = {
         cost_point = 0,
+        slot = {"ud_m16_fcg", "ud_m16_fcg_a2"},
+    },
+    ["ud_m16_receiver_altburst"] = {
+        cost_point = 0,
+        slot = {"ud_m16_fcg", "ud_m16_fcg_a2"},
     },
 
     ---------------------------------------------
